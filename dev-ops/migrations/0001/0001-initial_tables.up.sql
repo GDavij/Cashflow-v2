@@ -26,12 +26,12 @@ CREATE TABLE Users (
     [Username]                  VARCHAR(60) NOT NULL,
     [BirthDate]                 DATETIME2 NOT NULL,
     [CreatedAt]                 DATETIME2 NOT NULL,
-    [CreatedBy]                 BIGINT NULL,
+    [OwnerId]                   BIGINT NULL,
     [LastUpdatedAt]             DATETIME2 NULL,
     [LastModifiedBy]            BIGINT NULL,
     [RoleId]                    SMALLINT NOT NULL,
     CONSTRAINT [PK_Users_Id] PRIMARY KEY(Id),
-    CONSTRAINT [FK_Users_CreatedBy_Users_Id] FOREIGN KEY([CreatedBy]) REFERENCES Users([Id]),
+    CONSTRAINT [FK_Users_OwnerId_Users_Id] FOREIGN KEY([OwnerId]) REFERENCES Users([Id]),
     CONSTRAINT [FK_Users_LastModifiedBy_Users_Id] FOREIGN KEY([LastModifiedBy]) REFERENCES Users([Id]),
     CONSTRAINT [FK_Users_RoleId_Roles_Id] FOREIGN KEY([RoleId]) REFERENCES Roles([Id])
 );
