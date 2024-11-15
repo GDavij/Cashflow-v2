@@ -1,0 +1,9 @@
+services:
+  az-sql-db: 
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: azure-sql-cashflow-db
+    environment:
+      ACCEPT_EULA: 1
+      MSSQL_SA_PASSWORD: 's@cur3P9asbasw'
+    ports:
+      - 1433:1433
