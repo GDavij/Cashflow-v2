@@ -1,0 +1,2 @@
+-- SQL DOWN 2-initial-data-seed: 2024-11-15
+-- Created By: gdavi
