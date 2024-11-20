@@ -10,5 +10,4 @@ public class User : OwnableEntity<long, long>
     public DateTime BirthDate { get; init; }
     public long RoleId { get; init; }
     public Role Role { get; init; }
-    
 }
