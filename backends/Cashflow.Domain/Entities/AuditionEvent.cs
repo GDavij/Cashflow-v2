@@ -2,7 +2,7 @@
 
 namespace Cashflow.Domain.Entities;
 
-public class AuditionEvents : ValueObject<long>
+public class AuditionEvent : ValueObject<long>
 {
     public string Event { get; init; }
     public string? IpAddress { get; init; }
@@ -10,5 +10,6 @@ public class AuditionEvents : ValueObject<long>
     public bool PrivateEvent { get; init; }
     public Guid TraceIdentitifier { get; init; }
     public string? UserAgent { get; init; }
+    public User User { get; init; }
     public long UserId { get; init; }
 }

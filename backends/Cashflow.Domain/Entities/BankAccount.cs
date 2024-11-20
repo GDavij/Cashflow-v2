@@ -8,4 +8,6 @@ public class BankAccount : OwnableEntity<long, long>
     public AccountType AccountType { get; init; }
     public decimal CurrentValue { get; init; }
     public string Name { get; init; }
+    
+    public ICollection<Transaction> Transactions { get; init; }
 }

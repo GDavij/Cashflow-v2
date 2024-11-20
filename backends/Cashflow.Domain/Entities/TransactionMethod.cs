@@ -2,7 +2,7 @@
 
 namespace Cashflow.Domain.Entities;
 
-public class TransactionMethod : ValueObject<long>
+public class TransactionMethod : ValueObject<short>
 {
     public string Name { get; init; }
 }

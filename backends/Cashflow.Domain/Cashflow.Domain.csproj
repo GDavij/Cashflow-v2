@@ -9,10 +9,17 @@
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.10.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Cashflow.Core\Cashflow.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Commands\" />
+      <Folder Include="Queries\" />
     </ItemGroup>
 
 </Project>
