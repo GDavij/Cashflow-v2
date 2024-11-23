@@ -25,7 +25,7 @@ internal class AuditionEventMapping : ValueObjectMapping<AuditionEvent, long>
                .HasColumnName("PrivateEvent")
                .IsRequired();
 
-        builder.Property(a => a.TraceIdentitifier)
+        builder.Property(a => a.TraceIdentifier)
                .HasColumnName("TraceId")
                .IsRequired();
 

@@ -21,5 +21,10 @@ internal class CategoryMapping : OwnableEntityMapping<Category, long, long>
         builder.Property(c => c.Name)
                .HasColumnName("Name")
                .IsRequired();
+
+        builder.HasMany(c => c.Transactions)
+            .WithOne(t => t.Category)
+            .HasForeignKey(t => t.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
