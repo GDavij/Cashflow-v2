@@ -24,7 +24,7 @@ public class UpdateCategoryHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment);
+    public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, bool Active);
     public record Response(long Id);
 
     public async Task<Response> HandlerAsync(long id, Request request)
@@ -43,14 +43,11 @@ public class UpdateCategoryHandler
         var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == _authenticatedUser.Id);
         if (category is null)
         {
-            _logger.LogError("Could not found category with id {0} for user with id {1}.", category.Id, _authenticatedUser.Id);
+            _logger.LogError("Could not found category with id {0} for user with id {1}.", id, _authenticatedUser.Id);
             throw new EntityNotFoundException<Category>();
         }
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            category.ChangeNameTo(request.Name);
-        }
+        category.ChangeNameTo(request.Name);
 
         if (request is { MaximumBudgetInvestment: not null, MaximumMoneyInvestment: not null })
         {
@@ -60,18 +57,32 @@ public class UpdateCategoryHandler
 
         if (request.MaximumBudgetInvestment.HasValue)
         {
+            _logger.LogInformation("Setting maximum budget investment for category with id {0}.", category.Id);
             category.RemoveMaximumMoneyInvestmentBoundary();
             category.UseMaximumBudgetInvestmentOf(request.MaximumBudgetInvestment.Value);
         }
         else if (request.MaximumMoneyInvestment.HasValue)
         {
+            _logger.LogInformation("Setting maximum money investment for category with id {0}.", category.Id);
             category.RemoveMaximumBudgetInvestmentBoundary();
             category.UseMaximumMoneyInvestmentOf(request.MaximumMoneyInvestment.Value);
         }
         else
         {
+            _logger.LogInformation("Removing any financial constraint for category with id {0}.", category.Id);
             category.RemoveMaximumMoneyInvestmentBoundary();
             category.RemoveMaximumBudgetInvestmentBoundary();
+        }
+
+        if (category.Active)
+        {
+            _logger.LogInformation("Activating category with id {0}.", category.Id);
+            category.Activate();
+        }
+        else
+        {
+            _logger.LogInformation("Deactivating category with id {0}.", category.Id);
+            category.Deactivate();
         }
 
         await _dbContext.SaveChangesAsync();

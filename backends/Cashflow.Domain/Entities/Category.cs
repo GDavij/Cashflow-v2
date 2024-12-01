@@ -9,8 +9,8 @@ public class Category : OwnableEntity<long, long>
     public float? MaximumBudgetInvestment { get; private set; }
     public decimal? MaximumMoneyInvestment { get; private set; }
     public string Name { get; private set; }
-    
-    public ICollection<Transaction> Transactions { get; init; }
+
+    public ICollection<Transaction> Transactions { get; init; } = new List<Transaction>();
 
     public Category()
     { }
@@ -47,17 +47,17 @@ public class Category : OwnableEntity<long, long>
 
     public void UseMaximumBudgetInvestmentOf(float maxBudgetInvestmentPercent)
     {
-        if (!MaximumBudgetInvestment.HasValue)
-        {
-            return;
-        }
-        
         MaximumBudgetInvestment = maxBudgetInvestmentPercent;
         RaiseEvent(new DefinedMaximumBudgetInvestmentPercentEvent(this));
     }
 
     public void RemoveMaximumBudgetInvestmentBoundary()
     {
+        if (!MaximumBudgetInvestment.HasValue)
+        {
+            return;
+        }
+        
         MaximumBudgetInvestment = null;
         RaiseEvent(new RemovedMaximumBudgetInvestmentPercentBoundaryEvent(this));
     }

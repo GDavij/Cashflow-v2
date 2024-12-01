@@ -9,10 +9,10 @@ public abstract class OwnableEntity<TId, TOwnerId> : IEntity<TId>
     public TId Id { get; init; }
     public bool Active { get; private set; } = false;
     public bool Deleted { get; private set; } = false;
-    public TOwnerId? OwnerId { get; init; }
-    public DateTime CreatedAt { get; init; }
-    public TOwnerId? LastModifiedBy { get; init; }
-    public DateTime? LastModifiedAt { get; init; }
+    public TOwnerId? OwnerId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public TOwnerId? LastModifiedBy { get; set; }
+    public DateTime? LastModifiedAt { get; set; }
 
     public void Deactivate() => Active = false;
     public void Activate() => Active = true;
@@ -22,6 +22,7 @@ public abstract class OwnableEntity<TId, TOwnerId> : IEntity<TId>
     {
         Events.AddLast(@event);
     }
+    
 
     public IEnumerable<IEvent> Invoke() => Events;
 }
