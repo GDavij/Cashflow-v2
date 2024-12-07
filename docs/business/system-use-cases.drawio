@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
   <diagram name="Page-1" id="3Y0QFkgbiZ94lDn6XGw3">
-    <mxGraphModel dx="6263" dy="3067" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2872" dy="2469" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -341,13 +341,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-165" value="Notification Control" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
-          <mxGeometry x="-1120" y="-590" width="570" height="570" as="geometry" />
+          <mxGeometry x="-1120" y="-780" width="570" height="560" as="geometry" />
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-137" value="Notification Control" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-165">
-          <mxGeometry x="20" y="220" width="140" height="70" as="geometry" />
+          <mxGeometry x="20" y="390" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-136" value="Generate Activation Link" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-165">
-          <mxGeometry x="360" y="110" width="140" height="70" as="geometry" />
+          <mxGeometry x="360" y="310" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-169" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-165" source="d5EWRhAifgeRGTB-wiOk-137" target="d5EWRhAifgeRGTB-wiOk-136">
           <mxGeometry width="160" relative="1" as="geometry">
@@ -356,12 +356,21 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-140" value="Activate Account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-165">
-          <mxGeometry x="380" y="340" width="140" height="70" as="geometry" />
+          <mxGeometry x="380" y="420" width="140" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="d5EWRhAifgeRGTB-wiOk-170" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-165" source="d5EWRhAifgeRGTB-wiOk-137" target="d5EWRhAifgeRGTB-wiOk-140">
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-170" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-165" source="d5EWRhAifgeRGTB-wiOk-137" target="d5EWRhAifgeRGTB-wiOk-140">
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="159" y="240" as="sourcePoint" />
             <mxPoint x="351" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-181" value="Send Notifications" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-165">
+          <mxGeometry x="370" y="80" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-183" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-165" source="d5EWRhAifgeRGTB-wiOk-137" target="d5EWRhAifgeRGTB-wiOk-181">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="210" y="280" as="sourcePoint" />
+            <mxPoint x="370" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="d5EWRhAifgeRGTB-wiOk-166" value="" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=3;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="d5EWRhAifgeRGTB-wiOk-122" target="d5EWRhAifgeRGTB-wiOk-121">
@@ -377,6 +386,51 @@
           <mxGeometry width="160" relative="1" as="geometry">
             <mxPoint x="-40" y="-600" as="sourcePoint" />
             <mxPoint x="-40" y="-810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-172" value="Tracing" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=1;collapsible=0;width=160;" vertex="1" parent="1">
+          <mxGeometry x="450" y="-1110" width="490" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-173" value="Tracing Analisys" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-172">
+          <mxGeometry x="20" y="200" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-175" value="public events visualization" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-172">
+          <mxGeometry x="270" y="270" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-176" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-172" source="d5EWRhAifgeRGTB-wiOk-173" target="d5EWRhAifgeRGTB-wiOk-175">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="50" y="270" as="sourcePoint" />
+            <mxPoint x="210" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-177" value="private events visualization" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-172">
+          <mxGeometry x="280" y="110" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-178" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-172" source="d5EWRhAifgeRGTB-wiOk-173" target="d5EWRhAifgeRGTB-wiOk-177">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="150" y="219" as="sourcePoint" />
+            <mxPoint x="300" y="291" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-179" value="Alerts" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="d5EWRhAifgeRGTB-wiOk-172">
+          <mxGeometry x="20" y="70" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-180" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="d5EWRhAifgeRGTB-wiOk-172" source="d5EWRhAifgeRGTB-wiOk-173" target="d5EWRhAifgeRGTB-wiOk-179">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="170" y="195" as="sourcePoint" />
+            <mxPoint x="290" y="155" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-174" value="" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;labelBackgroundColor=none;strokeWidth=3;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="d5EWRhAifgeRGTB-wiOk-173" target="d5EWRhAifgeRGTB-wiOk-121">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint y="-644" as="sourcePoint" />
+            <mxPoint x="-15" y="-1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d5EWRhAifgeRGTB-wiOk-182" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=none;endArrow=open;endFill=0;dashed=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="d5EWRhAifgeRGTB-wiOk-181" target="d5EWRhAifgeRGTB-wiOk-179">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="-550" y="-750" as="sourcePoint" />
+            <mxPoint x="-390" y="-750" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
