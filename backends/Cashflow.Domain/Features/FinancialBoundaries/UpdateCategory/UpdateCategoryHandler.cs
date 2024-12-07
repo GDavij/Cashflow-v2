@@ -27,7 +27,7 @@ public class UpdateCategoryHandler
     public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, bool Active);
     public record Response(long Id);
 
-    public async Task<Response> HandlerAsync(long id, Request request)
+    public async Task<Response> HandleAsync(long id, Request request)
     {
         _logger.LogInformation("Attemping to update category with id {0}.", id);
 

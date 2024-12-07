@@ -20,7 +20,7 @@ public class ListCategoriesHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Response(long Id, string Name, int TotalTransactionsRegistered);
+    public record Response(long Id, string Name, int TotalTransactionsRegistered, bool Active);
     
     public async Task<IEnumerable<Response>> HandleAsync(CancellationToken cancellationToken)
     {
@@ -28,7 +28,7 @@ public class ListCategoriesHandler
 
         var result = await _dbContext.Categories.Include(c => c.Transactions)
                                                                  .Where(c => c.OwnerId == _authenticatedUser.Id)
-                                                                 .Select(c => new Response(c.Id, c.Name, c.Transactions.Count))
+                                                                 .Select(c => new Response(c.Id, c.Name, c.Transactions.Count, c.Active))
                                                                  .ToListAsync(cancellationToken);
 
         _logger.LogInformation("Listed {0} categories for user with id {1}.", result.Count, _authenticatedUser.Id);
@@ -36,3 +36,9 @@ public class ListCategoriesHandler
         return result;
     }
 }
+
+
+/*
+ * Improvements
+ * Add an analytical result to see if usage is going closer to limit scope of investment of category
+*/

@@ -45,7 +45,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("New Category Name", null, null, true);
 
         // Act
-        var result = await _handler.HandlerAsync(category.Id, request);
+        var result = await _handler.HandleAsync(category.Id, request);
 
         // Assert
         result.Should().NotBeNull();
@@ -65,7 +65,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("Category", 0.5f, null, true);
 
         // Act
-        var result = await _handler.HandlerAsync(category.Id, request);
+        var result = await _handler.HandleAsync(category.Id, request);
 
         // Assert
         result.Should().NotBeNull();
@@ -86,7 +86,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("Category", null, 100m, true);
 
         // Act
-        var result = await _handler.HandlerAsync(category.Id, request);
+        var result = await _handler.HandleAsync(category.Id, request);
 
         // Assert
         result.Should().NotBeNull();
@@ -108,7 +108,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("Category 2", null, null, true);
 
         // Act & Assert
-        await FluentActions.Invoking(() => _handler.HandlerAsync(category1.Id, request))
+        await FluentActions.Invoking(() => _handler.HandleAsync(category1.Id, request))
             .Should()
             .ThrowAsync<AttempToDupplicateCategoryNameException>();
     }
@@ -124,7 +124,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("New Category Name", null, null, true);
 
         // Act & Assert
-        await FluentActions.Invoking(() => _handler.HandlerAsync(1, request))
+        await FluentActions.Invoking(() => _handler.HandleAsync(1, request))
             .Should()
             .ThrowAsync<EntityNotFoundException<Category>>();
     }
@@ -141,7 +141,7 @@ public class UpdateCategoryHandlerTests
         var request = new UpdateCategoryHandler.Request("Category", 0.5f, 100m, true);
 
         // Act & Assert
-        await FluentActions.Invoking(() => _handler.HandlerAsync(category.Id, request))
+        await FluentActions.Invoking(() => _handler.HandleAsync(category.Id, request))
             .Should()
             .ThrowAsync<AttempToAddMoreThanOneFinancialConstraintException>();
     }

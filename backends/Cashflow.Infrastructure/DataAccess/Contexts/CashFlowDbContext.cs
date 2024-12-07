@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Cashflow.Infrastructure.DataAccess.Contexts;
 
-public class CashFlowDbContext : DbContext, ICashflowDbContext
+internal class CashflowDbContext : DbContext, ICashflowDbContext
 {
     private readonly IAuthenticatedUser _authenticatedUser;
     
@@ -22,7 +22,8 @@ public class CashFlowDbContext : DbContext, ICashflowDbContext
     public DbSet<TransactionMethod> TransactionMethods { get; init; }
     public DbSet<User> Users { get; init; }
 
-    public CashFlowDbContext(IAuthenticatedUser authenticatedUser)
+    public CashflowDbContext(DbContextOptions options, IAuthenticatedUser authenticatedUser)
+        : base(options)
     {
         _authenticatedUser = authenticatedUser;
     }
@@ -31,7 +32,7 @@ public class CashFlowDbContext : DbContext, ICashflowDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CashFlowDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CashflowDbContext).Assembly);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -44,6 +45,7 @@ public class CashFlowDbContext : DbContext, ICashflowDbContext
             {
                 entry.Entity.CreatedAt = DateTime.UtcNow;
                 entry.Entity.OwnerId = _authenticatedUser.Id;
+                entry.Entity.Activate();
             }
 
             if (entry.State == EntityState.Modified)

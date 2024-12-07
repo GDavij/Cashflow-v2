@@ -51,7 +51,7 @@ public class GetCategoryHandlerTests
         _dbContext.Setup(c => c.Transactions).Returns(transactions.Object);
 
         // Act
-        var result = await _handler.HandleAsync(category.Id);
+        var result = await _handler.HandleAsync(category.Id, default);
 
         // Assert
         result.Should().NotBeNull();
@@ -71,7 +71,7 @@ public class GetCategoryHandlerTests
         _dbContext.Setup(c => c.Categories).Returns(categories.Object);
 
         // Act & Assert
-        await FluentActions.Invoking(() => _handler.HandleAsync(1))
+        await FluentActions.Invoking(() => _handler.HandleAsync(1, default))
                            .Should()
                            .ThrowAsync<EntityNotFoundException<Category>>();
     }
@@ -86,7 +86,7 @@ public class GetCategoryHandlerTests
         _dbContext.Setup(c => c.Categories).Returns(categories.Object);
 
         // Act & Assert
-        await FluentActions.Invoking(() => _handler.HandleAsync(category.Id))
+        await FluentActions.Invoking(() => _handler.HandleAsync(category.Id, default))
                            .Should()
                            .ThrowAsync<EntityNotFoundException<Category>>();
     }

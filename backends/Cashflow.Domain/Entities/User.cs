@@ -8,6 +8,6 @@ public class User : OwnableEntity<long, long>
     public string Passphrase { get; init; }
     public string Username { get; init; }
     public DateTime BirthDate { get; init; }
-    public long RoleId { get; init; }
+    public short RoleId { get; init; }
     public Role Role { get; init; }
 }

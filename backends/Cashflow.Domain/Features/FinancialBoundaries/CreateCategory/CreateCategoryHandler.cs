@@ -19,7 +19,7 @@ public class CreateCategoryHandler
         _dbContext = dbContext;
         _authenticatedUser = authenticatedUser;
     }
-    
+
     public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment);
     public record Response(long Id);
 

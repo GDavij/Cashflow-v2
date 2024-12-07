@@ -11,4 +11,9 @@
         <PackageReference Include="Scalar.AspNetCore" Version="1.2.37" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Cashflow.Domain\Cashflow.Domain.csproj" />
+      <ProjectReference Include="..\Cashflow.Infrastructure\Cashflow.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
