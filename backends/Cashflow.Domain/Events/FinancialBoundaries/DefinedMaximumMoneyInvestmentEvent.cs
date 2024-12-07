@@ -6,7 +6,7 @@ public class DefinedMaximumMoneyInvestmentEvent : BaseEvent
 {
     private readonly Category _category;
 
-    public DefinedMaximumMoneyInvestmentEvent(Category category)
+    public DefinedMaximumMoneyInvestmentEvent(Category category) : base(true)
     {
         _category = category;
     }

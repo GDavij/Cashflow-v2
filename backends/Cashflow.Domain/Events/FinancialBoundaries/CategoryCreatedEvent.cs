@@ -6,7 +6,7 @@ namespace Cashflow.Domain.Events.FinancialBoundaries;
 public class CategoryCreatedEvent : BaseEvent
 {
     private readonly Category Category;
-    public CategoryCreatedEvent(Category category) 
+    public CategoryCreatedEvent(Category category) : base(true)
     {
         Category = category;
     }

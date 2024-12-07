@@ -12,4 +12,5 @@ public class AuditionEvent : ValueObject<long>, IEvent
     public string? UserAgent { get; init; }
     public User User { get; init; }
     public long UserId { get; init; }
+    public bool Private { get; init; }
 }

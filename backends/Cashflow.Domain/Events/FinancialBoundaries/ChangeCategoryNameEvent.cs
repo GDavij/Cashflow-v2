@@ -8,7 +8,7 @@ public class ChangeCategoryNameEvent : BaseEvent
     private readonly string _oldName;
 
 
-    public ChangeCategoryNameEvent(Category category, string oldName)
+    public ChangeCategoryNameEvent(Category category, string oldName) : base(true)
     {
         _category = category;
         _oldName = oldName;

@@ -6,7 +6,7 @@ public class RemovedMaximumBudgetInvestmentPercentBoundaryEvent : BaseEvent
 {
     private readonly Category _category;
 
-    public RemovedMaximumBudgetInvestmentPercentBoundaryEvent(Category category)
+    public RemovedMaximumBudgetInvestmentPercentBoundaryEvent(Category category) : base(true)
     {
         _category = category;
     }
