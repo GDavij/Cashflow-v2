@@ -2,7 +2,7 @@
 
 namespace Cashflow.Domain.Entities;
 
-public class Recurrency : OwnableEntity<long, long>
+public class Recurrency : OwnableEntity<Recurrency>
 {
     public short RecurrencyTimeId { get; init; }
     public RecurrencyTime RecurrencyTime { get; init; }

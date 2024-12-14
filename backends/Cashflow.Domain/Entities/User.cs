@@ -2,7 +2,7 @@
 
 namespace Cashflow.Domain.Entities;
 
-public class User : OwnableEntity<long, long>
+public class User : OwnableEntity<User>
 {
     public string Email { get; init; }
     public string Passphrase { get; init; }

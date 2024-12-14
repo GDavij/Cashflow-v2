@@ -4,7 +4,7 @@ using Cashflow.Domain.Events.FinancialBoundaries;
 
 namespace Cashflow.Domain.Entities;
 
-public class Category : OwnableEntity<long, long>
+public class Category : OwnableEntity<Category>
 {
     public double? MaximumBudgetInvestment { get; private set; }
     public decimal? MaximumMoneyInvestment { get; private set; }
@@ -15,7 +15,7 @@ public class Category : OwnableEntity<long, long>
     public Category()
     { }
     
-    public Category(string name)
+    public Category(string name) : base()
     {
         Name = name;
         RaiseEvent(new CategoryCreatedEvent(this));
@@ -23,9 +23,13 @@ public class Category : OwnableEntity<long, long>
 
     public void ChangeNameTo(string newName)
     {
-        var oldName = Name;
+        if (newName == Name)
+        {
+            return;
+        }
+
+        RaiseEvent(new ChangeCategoryNameEvent(this, Name));
         Name = newName;
-        RaiseEvent(new ChangeCategoryNameEvent(this, oldName));
     }
     
     public void UseMaximumMoneyInvestmentOf(decimal maxMoneyInvestmentValue)

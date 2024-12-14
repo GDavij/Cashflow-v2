@@ -2,7 +2,7 @@
 
 namespace Cashflow.Domain.Entities;
 
-public class Transaction : OwnableEntity<long, long>
+public class Transaction : OwnableEntity<Transaction>
 {
     public long? BankAccountId { get; init; }
     public BankAccount BankAccount { get; init; }

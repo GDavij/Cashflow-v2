@@ -6,4 +6,6 @@ public interface IEvent
     public Guid TraceIdentifier { get; set; }
     public DateTime OccuredAt { get; init; }
     public bool Private { get; init; }
+
+    public void BindToTrace(Guid traceId);
 }

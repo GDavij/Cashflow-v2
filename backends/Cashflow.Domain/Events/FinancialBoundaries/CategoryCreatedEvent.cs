@@ -1,4 +1,4 @@
-﻿using Cashflow.Core;
+﻿using Cashflow.Core.Events;
 using Cashflow.Domain.Entities;
 
 namespace Cashflow.Domain.Events.FinancialBoundaries;

@@ -1,4 +1,6 @@
 ﻿using Cashflow.Domain.Features.FinancialBoundaries;
+using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.UpdateBankAccount;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +16,9 @@ public static class DependencyInjection
         services.AddScoped<ListCategoriesHandler>();
         services.AddScoped<UpdateCategoryHandler>();
 
+        services.AddScoped<CreateBankAccountHandler>();
+        services.AddScoped<UpdateBankAccountHandler>();
+
         return services;
     }
 
@@ -22,6 +27,9 @@ public static class DependencyInjection
         //Is possible to decouple this in future using Assembly markers.
         services.AddScoped<CreateCategoryRequestValidator>();
         services.AddScoped<UpdateCategoryRequestValidator>();
+
+        services.AddScoped<CreateBankAccountRequestValidator>();
+        services.AddScoped<UpdateBankAccountRequestValidator>();
         
         return services;
     }

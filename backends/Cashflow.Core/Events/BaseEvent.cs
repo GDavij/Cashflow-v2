@@ -1,6 +1,6 @@
 ﻿using Cashflow.Core;
 
-namespace Cashflow.Domain.Events;
+namespace Cashflow.Core.Events;
 
 public abstract class BaseEvent : IEvent
 {

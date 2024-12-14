@@ -20,9 +20,9 @@ public class CreateBankAccountHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Request(short AccountType, string Name, decimal? initialValue);
+    public record Request(short AccountType, string Name, decimal? InitialValue);
 
-    public record Response(long BankId);
+    public record Response(long Id);
 
     public async Task<Response> HandleAsync(Request request)
     {
@@ -35,9 +35,9 @@ public class CreateBankAccountHandler
         }
 
         BankAccount bankAccount;
-        if (request.initialValue is not null)
+        if (request.InitialValue is not null)
         {
-            bankAccount = new BankAccount(request.AccountType, request.Name, request.initialValue.Value);
+            bankAccount = new BankAccount(request.AccountType, request.Name, request.InitialValue.Value);
         }
         else
         {
