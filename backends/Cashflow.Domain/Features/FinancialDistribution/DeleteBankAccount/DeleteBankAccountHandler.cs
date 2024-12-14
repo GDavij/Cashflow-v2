@@ -2,6 +2,7 @@
 using Cashflow.Domain.Abstractions.RequestPipeline;
 using Cashflow.Domain.Entities;
 using Cashflow.Domain.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
@@ -21,7 +22,7 @@ public class DeleteBankAccountHandler
 
     public record Response(long Id);
 
-    public async Task HandleAsync(long id)
+    public async Task<Response> HandleAsync(long id)
     {
         _logger.LogInformation("Attemping to delete Bank account with Id {0} for user with id {1}", id, _authenticatedUser.Id);
         BankAccount? bankAccount = await _dbContext.BankAccounts.FirstOrDefaultAsync(b => b.Id == id && b.OwnerId == _authenticatedUser.Id);
@@ -34,4 +35,7 @@ public class DeleteBankAccountHandler
         await _dbContext.SaveChangesAsync();
 
         _logger.LogInformation("Deleted bank account with name {0}, having Id {1}.", bankAccount.Name, bankAccount.Id);
+
+        return new Response(bankAccount.Id);
     }
+}
