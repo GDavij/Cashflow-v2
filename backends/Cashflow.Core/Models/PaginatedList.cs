@@ -9,13 +9,13 @@ public record PaginatedList<T>(IReadOnlyList<T> Items, int TotalCount, int Page,
     public bool HasNextPage => Page < TotalPages;
 
 
-    public PaginatedList<T> FromQueryable(IQueryable<T> Source)
+    public static PaginatedList<T> FromQueryable(IQueryable<T> source, int page, int pageSize)
     {
-        var count = Source.Count();
-        var items = Source.Skip((Page - 1) * PageSize)
-                          .Take(PageSize)
+        var count = source.Count();
+        var items = source.Skip((page - 1) * pageSize)
+                          .Take(pageSize)
                           .ToImmutableList();
 
-        return new PaginatedList<T>(items, count, Page, PageSize);
+        return new PaginatedList<T>(items, count, page, pageSize);
     }
 }

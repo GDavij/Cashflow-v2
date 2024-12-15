@@ -27,7 +27,7 @@ public class GetBankAccountHandler
                            long TotalTransactionsRegistered,
                            List<TransactionDto> LastTransactions);
 
-    public async Task<Response> HandleAsync(long id)
+    public async Task<Response> HandleAsync(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Attemping to get Bank account with Id {0} for user with id {1}", id, _authenticatedUser.Id);
 
@@ -35,7 +35,7 @@ public class GetBankAccountHandler
                             join transactions in _dbContext.Transactions on bankAccounts.Id equals transactions.BankAccountId
                             join transactionMethods in _dbContext.TransactionMethods on transactions.TransactionMethodId equals transactionMethods.Id
                             join categories in _dbContext.Categories on transactions.CategoryId equals categories.Id
-                            where bankAccounts.Id == id && !bankAccounts.Deleted && bankAccounts.Active
+                            where bankAccounts.Id == id && !bankAccounts.Deleted && bankAccounts.Active && !transactions.Deleted
                             select new Response(bankAccounts.Id,
                                                new AccountTypeDto(bankAccounts.AccountType.Id, bankAccounts.AccountType.Name),
                                                bankAccounts.CurrentValue,
@@ -44,7 +44,7 @@ public class GetBankAccountHandler
                                                bankAccounts.Transactions.OrderByDescending(t => t.LastModifiedAt)
                                                                         .Take(10)
                                                                         .Select(t => new TransactionDto(t.Id, t.Description, t.DoneAt, t.TransactionMethod.Name, new CategoryDto(t.Category.Id, t.Category.Name)))
-                                               .ToList())).FirstOrDefaultAsync();
+                                               .ToList())).FirstOrDefaultAsync(cancellationToken);
 
         if (result is null)
         {

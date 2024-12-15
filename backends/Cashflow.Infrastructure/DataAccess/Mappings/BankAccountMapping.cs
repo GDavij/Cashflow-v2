@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal class BankAccountMapping : OwnableEntityMapping<BankAccount, long, long>
+internal class BankAccountMapping : OwnableEntityMapping<BankAccount>
 {
     public override void Configure(EntityTypeBuilder<BankAccount> builder)
     {

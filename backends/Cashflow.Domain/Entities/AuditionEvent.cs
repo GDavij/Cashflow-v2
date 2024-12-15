@@ -13,4 +13,9 @@ public class AuditionEvent : ValueObject<long>, IEvent
     public User User { get; init; }
     public long UserId { get; init; }
     public bool Private { get; init; }
+
+    public void BindToTrace(Guid traceId)
+    {
+        TraceIdentifier = traceId;
+    }
 }

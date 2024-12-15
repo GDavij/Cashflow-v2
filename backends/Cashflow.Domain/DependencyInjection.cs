@@ -1,5 +1,8 @@
 ﻿using Cashflow.Domain.Features.FinancialBoundaries;
 using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.GetBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.ListBankAccounts;
 using Cashflow.Domain.Features.FinancialDistribution.UpdateBankAccount;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +21,9 @@ public static class DependencyInjection
 
         services.AddScoped<CreateBankAccountHandler>();
         services.AddScoped<UpdateBankAccountHandler>();
+        services.AddScoped<DeleteBankAccountHandler>();
+        services.AddScoped<ListBankAccountsHandler>();
+        services.AddScoped<GetBankAccountHandler>();
 
         return services;
     }
@@ -30,6 +36,7 @@ public static class DependencyInjection
 
         services.AddScoped<CreateBankAccountRequestValidator>();
         services.AddScoped<UpdateBankAccountRequestValidator>();
+        services.AddScoped<ListBankAccountsRequestValidator>();
         
         return services;
     }

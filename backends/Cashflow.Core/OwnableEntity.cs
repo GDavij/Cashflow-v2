@@ -2,7 +2,7 @@
 
 namespace Cashflow.Core;
 
-public abstract class OwnableEntity<TEntity> : IEntity<long>
+public abstract class OwnableEntity<TEntity> : IEntity<long>, IEventSource
     where TEntity : OwnableEntity<TEntity>
 {
     private LinkedList<IEvent> Events { get; } = new LinkedList<IEvent>();
@@ -47,6 +47,5 @@ public abstract class OwnableEntity<TEntity> : IEntity<long>
         Events.AddLast(@event);
     }
     
-
     public IEnumerable<IEvent> Invoke() => Events;
 }

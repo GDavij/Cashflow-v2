@@ -1,6 +1,9 @@
-﻿namespace Cashflow.Core;
+﻿using MediatR;
 
-public interface IEvent
+namespace Cashflow.Core;
+
+// Allow MediatR to handle events (coupling)
+public interface IEvent : INotification
 {
     public long Id { get; init; }
     public Guid TraceIdentifier { get; set; }

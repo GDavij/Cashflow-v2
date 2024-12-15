@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal class UserMapping : OwnableEntityMapping<User, long, long>
+internal class UserMapping : OwnableEntityMapping<User>
 {
     public override void Configure(EntityTypeBuilder<User> builder)
     {

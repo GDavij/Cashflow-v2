@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal class RecurrencyMapping : OwnableEntityMapping<Recurrency, long, long>
+internal class RecurrencyMapping : OwnableEntityMapping<Recurrency>
 {
     public override void Configure(EntityTypeBuilder<Recurrency> builder)
     {

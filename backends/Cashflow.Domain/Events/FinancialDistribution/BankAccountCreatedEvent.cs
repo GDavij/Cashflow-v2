@@ -1,13 +1,13 @@
 ﻿using Cashflow.Core;
+using Cashflow.Domain.Entities;
 
 namespace Cashflow.Core.Events.FinancialDistribution;
 
-public class BankAccountCreatedEvent<T> : BaseEvent
-    where T : OwnableEntity<T>
+public class BankAccountCreatedEvent : BaseEvent
 {
-    private readonly T _bankAccount;
+    private readonly BankAccount _bankAccount;
 
-    public BankAccountCreatedEvent(T bankAccount) : base(true)
+    public BankAccountCreatedEvent(BankAccount bankAccount) : base(true)
     {
         _bankAccount = bankAccount;
     }

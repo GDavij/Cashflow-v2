@@ -13,20 +13,19 @@ public class BankAccount : OwnableEntity<BankAccount>
     public ICollection<Transaction> Transactions { get; init; } = new List<Transaction>();
 
     public BankAccount(short accountTypeId, string name)
+        : base()
     {
         AccountTypeId = accountTypeId;
         Name = name;
         CurrentValue = 0.0M;
-        
     }
 
     public BankAccount(short accountTypeId, string name, decimal currentValue)
+        : base()
     {
         AccountTypeId = accountTypeId;
         Name = name;
         CurrentValue = currentValue;
-        
-        RaiseEvent(new BankAccountCreatedEvent(this));
     }
 
     public void RenameTo(string name)

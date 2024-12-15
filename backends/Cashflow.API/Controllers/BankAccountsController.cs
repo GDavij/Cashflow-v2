@@ -1,4 +1,8 @@
 ﻿using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.GetBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.ListBankAccounts;
+using Cashflow.Domain.Features.FinancialDistribution.UpdateBankAccount;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,10 +48,11 @@ public class BankAccountsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(ListBankAccountsHandler.Response), 200)]
-    public async Task<IActionResult> ListBankAccounts([FromServices] ListBankAccountsHandler handler,
+    public async Task<IActionResult> ListBankAccounts([FromQuery] ListBankAccountsHandler.Request request, 
+                                                      [FromServices] ListBankAccountsHandler handler,
         CancellationToken cancellationToken)
     {
-        return Ok(await handler.HandleAsync(cancellationToken));
+        return Ok(await handler.HandleAsync(request, cancellationToken));
     }
 
     [HttpPut("{id}")]

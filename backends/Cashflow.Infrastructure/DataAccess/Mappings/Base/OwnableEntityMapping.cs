@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal abstract class OwnableEntityMapping<T, TId, TOwnerId> : IEntityTypeConfiguration<T>
-    where TId : struct
-    where TOwnerId : struct
-    where T : OwnableEntity<TId, TOwnerId>
+internal abstract class OwnableEntityMapping<T> : IEntityTypeConfiguration<T>
+    where T : OwnableEntity<T>
 {
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {

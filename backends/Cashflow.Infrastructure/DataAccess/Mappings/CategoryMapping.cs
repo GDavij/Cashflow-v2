@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal class CategoryMapping : OwnableEntityMapping<Category, long, long>
+internal class CategoryMapping : OwnableEntityMapping<Category>
 {
     public override void Configure(EntityTypeBuilder<Category> builder)
     {

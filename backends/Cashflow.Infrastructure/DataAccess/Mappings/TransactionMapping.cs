@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cashflow.Infrastructure.DataAccess.Mappings;
 
-internal class TransactionMapping : OwnableEntityMapping<Transaction, long, long> 
+internal class TransactionMapping : OwnableEntityMapping<Transaction> 
 {
     public override void Configure(EntityTypeBuilder<Transaction> builder)
     {
