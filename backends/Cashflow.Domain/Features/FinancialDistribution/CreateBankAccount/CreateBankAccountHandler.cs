@@ -34,6 +34,14 @@ public class CreateBankAccountHandler
             throw new AttemptToCreateBankAccountWithNonExistentAccountTypeException(request.AccountType);
         }
 
+        bool hasAnyBankAccountWithSameName = await _dbContext.BankAccounts.AnyAsync(b => b.Name == request.Name &&
+                                                                                         b.OwnerId == _authenticatedUser.Id &&
+                                                                                         !b.Deleted);
+        if (hasAnyBankAccountWithSameName)
+        {
+            throw new AttemptToDuplicateBankAccountNameException(request.Name);
+        }
+
         BankAccount bankAccount;
         if (request.InitialValue is not null)
         {

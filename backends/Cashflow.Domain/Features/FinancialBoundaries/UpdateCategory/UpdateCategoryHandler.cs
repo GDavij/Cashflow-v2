@@ -33,14 +33,17 @@ public class UpdateCategoryHandler
 
         bool hasAnyCategoryWithSameName = await _dbContext.Categories.AnyAsync(c => c.Name == request.Name &&
                                                                                              c.OwnerId == _authenticatedUser.Id &&
-                                                                                             c.Id != id);
+                                                                                             c.Id != id &&
+                                                                                             !c.Deleted);
         if (hasAnyCategoryWithSameName)
         {
             _logger.LogError("An attempt to create a category with existent name \"{0}\" was made.", request.Name);
-            throw new AttempToDupplicateCategoryNameException(request.Name);
+            throw new AttempToDuplicateCategoryNameException(request.Name);
         }
 
-        var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == _authenticatedUser.Id);
+        var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id &&
+                                                                            c.OwnerId == _authenticatedUser.Id &&
+                                                                            !c.Deleted);
         if (category is null)
         {
             _logger.LogError("Could not found category with id {0} for user with id {1}.", id, _authenticatedUser.Id);
@@ -74,7 +77,7 @@ public class UpdateCategoryHandler
             category.RemoveMaximumBudgetInvestmentBoundary();
         }
 
-        if (category.Active)
+        if (request.Active)
         {
             _logger.LogInformation("Activating category with id {0}.", category.Id);
             category.Activate();

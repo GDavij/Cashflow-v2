@@ -21,14 +21,14 @@ public class ListBankAccountsHandler
 
     public record Request(string? Name, short? AccountType, int Page, int PageSize);
 
-    public record Response(long Id, string Name, decimal CurrentValue, AccountTypeDto AccountType);
+    public record Response(long Id, string Name, decimal CurrentValue, AccountTypeDto AccountType, bool Active);
 
     public async Task<IEnumerable<Response>> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Attempting to list bank accounts for user with id {0}.", _authenticatedUser.Id);
 
         var bankAccounts = _dbContext.BankAccounts.Include(b => b.AccountType)
-                                                  .Where(b => b.OwnerId == _authenticatedUser.Id);
+                                                  .Where(b => b.OwnerId == _authenticatedUser.Id && !b.Deleted);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
         {
@@ -44,6 +44,7 @@ public class ListBankAccountsHandler
                                  .Select(b => new Response(b.Id,
                                                            b.Name,
                                                            b.CurrentValue,
-                                                           new AccountTypeDto(b.AccountType.Id, b.AccountType.Name))).ToListAsync(cancellationToken);
+                                                           new AccountTypeDto(b.AccountType.Id, b.AccountType.Name),
+                                                           b.Active)).ToListAsync(cancellationToken);
     }
 }

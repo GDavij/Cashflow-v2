@@ -12,13 +12,12 @@ public class Category : OwnableEntity<Category>
 
     public ICollection<Transaction> Transactions { get; init; } = new List<Transaction>();
 
-    public Category()
+    public Category() : base()
     { }
     
     public Category(string name) : base()
     {
         Name = name;
-        RaiseEvent(new CategoryCreatedEvent(this));
     }
 
     public void ChangeNameTo(string newName)

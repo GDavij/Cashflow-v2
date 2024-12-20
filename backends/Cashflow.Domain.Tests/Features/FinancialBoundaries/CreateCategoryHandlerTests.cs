@@ -93,7 +93,7 @@ public class CreateCategoryHandlerTests
         //Act and Assert
         await FluentActions.Invoking(() => _handler.HandleAsync(command))
                                                    .Should()
-                                                   .ThrowAsync<AttempToDupplicateCategoryNameException>();
+                                                   .ThrowAsync<AttempToDuplicateCategoryNameException>();
     }
     
     [Fact]

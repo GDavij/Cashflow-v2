@@ -28,11 +28,12 @@ public class CreateCategoryHandler
         _logger.LogInformation("Attemping to create a category with Name \"{0}\".", request.Name);
         
         bool hasAnyCategoryWithSameName = await _dbContext.Categories.AnyAsync(c => c.Name == request.Name &&
-                                                                                             c.OwnerId == _authenticatedUser.Id);
+                                                                                             c.OwnerId == _authenticatedUser.Id &&
+                                                                                             !c.Deleted);
         if (hasAnyCategoryWithSameName)
         {
             _logger.LogError("An attempt to create a category with existent name \"{0}\" was made.", request.Name);
-            throw new AttempToDupplicateCategoryNameException(request.Name);
+            throw new AttempToDuplicateCategoryNameException(request.Name);
         }
 
         var category = new Category(request.Name);

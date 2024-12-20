@@ -26,18 +26,33 @@ public abstract class OwnableEntity<TEntity> : IEntity<long>, IEventSource
 
     public void Deactivate()
     {
+        if (Active is false)
+        {
+            return;
+        }
+
         Active = false;
         RaiseEvent(new EntityDeactivatedEvent<TEntity>((TEntity)this));
     }
     
     public void Activate()
     {
+        if (Active)
+        {
+            return;
+        }
+
         Active = true;
         RaiseEvent(new EntityActivatedEvent<TEntity>((TEntity)this));
     }
 
     public void Delete()
     {
+        if (Deleted)
+        {
+            return;
+        }
+
         Deleted = true;
         RaiseEvent(new EntityDeletedEvent<TEntity>((TEntity)this));
     }

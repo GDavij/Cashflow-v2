@@ -12,6 +12,7 @@ builder.Services.AddDomain()
                 .AddValidation();
 
 builder.Services.AddRequestPipeline()
+                .AddEventReaction()
                 .AddDataAccess(builder.Configuration);
 
 builder.Services.AddOpenApi();

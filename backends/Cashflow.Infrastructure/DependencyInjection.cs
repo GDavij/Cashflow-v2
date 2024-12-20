@@ -1,7 +1,9 @@
 ﻿using Cashflow.Core;
 using Cashflow.Domain.Abstractions.DataAccess;
+using Cashflow.Domain.Abstractions.EventHandling;
 using Cashflow.Domain.Abstractions.RequestPipeline;
 using Cashflow.Infrastructure.DataAccess.Contexts;
+using Cashflow.Infrastructure.EventHandling;
 using Cashflow.Infrastructure.RequestPipeline;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +13,18 @@ namespace Cashflow.Infrastructure;
 
 public static class DependencyInjection
 {
+
+    public static IServiceCollection AddEventReaction(this IServiceCollection services)
+    {
+        services.AddScoped<IEventMediator, MediatrEventMediator>();
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(Domain.DependencyInjection).Assembly);
+        });
+
+        return services;
+    }
+
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
 

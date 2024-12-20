@@ -2,6 +2,7 @@
 using Cashflow.Domain.Abstractions.RequestPipeline;
 using Cashflow.Domain.Entities;
 using Cashflow.Domain.Exceptions;
+using Cashflow.Domain.Exceptions.FinancialDistribution;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -20,7 +21,7 @@ public class UpdateBankAccountHandler
         _authenticatedUser = authenticatedUser;
     }
     
-    public record Request(string Name);
+    public record Request(string Name, bool Active);
     
     public record Response(long Id);
     
@@ -34,7 +35,27 @@ public class UpdateBankAccountHandler
             throw new EntityNotFoundException<BankAccount>();
         }
 
+
+        bool hasAnyBankAccountWithSameName = await _dbContext.BankAccounts.AnyAsync(b => b.Name == request.Name &&
+                                                                                         b.OwnerId == _authenticatedUser.Id &&
+                                                                                         b.Id != id &&
+                                                                                         !b.Deleted);
+        if (hasAnyBankAccountWithSameName)
+        {
+            throw new AttemptToDuplicateBankAccountNameException(request.Name);
+        }
+
         bankAccount.RenameTo(request.Name);
+
+        if (request.Active)
+        {
+            bankAccount.Activate();
+        }
+        else
+        {
+            bankAccount.Deactivate();
+        }
+
         await _dbContext.SaveChangesAsync();
         
         _logger.LogInformation("Updated bank account with name {0}, having Id {1}.", bankAccount.Name, bankAccount.Id);

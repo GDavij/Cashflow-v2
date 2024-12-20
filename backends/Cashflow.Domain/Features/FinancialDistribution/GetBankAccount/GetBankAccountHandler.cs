@@ -25,17 +25,21 @@ public class GetBankAccountHandler
                            decimal CurrentValue,
                            string Name,
                            long TotalTransactionsRegistered,
-                           List<TransactionDto> LastTransactions);
+                           List<TransactionDto> LastTransactions,
+                           bool Active);
 
     public async Task<Response> HandleAsync(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Attemping to get Bank account with Id {0} for user with id {1}", id, _authenticatedUser.Id);
 
-        var result = await (from bankAccounts in _dbContext.BankAccounts
-                            join transactions in _dbContext.Transactions on bankAccounts.Id equals transactions.BankAccountId
-                            join transactionMethods in _dbContext.TransactionMethods on transactions.TransactionMethodId equals transactionMethods.Id
-                            join categories in _dbContext.Categories on transactions.CategoryId equals categories.Id
-                            where bankAccounts.Id == id && !bankAccounts.Deleted && bankAccounts.Active && !transactions.Deleted
+        var result = await (from bankAccounts in _dbContext.BankAccounts.Where(b => b.OwnerId == _authenticatedUser.Id)
+                            join transactions in _dbContext.Transactions.Where(t => !t.Deleted) on bankAccounts.Id equals transactions.BankAccountId into transactionsHistory
+                            from transactions in transactionsHistory.DefaultIfEmpty()
+                            join transactionMethods in _dbContext.TransactionMethods on transactions.TransactionMethodId equals transactionMethods.Id into transactionMethodsGroup
+                            from transactionMethods in transactionMethodsGroup.DefaultIfEmpty()
+                            join categories in _dbContext.Categories on transactions.CategoryId equals categories.Id into categoriesGroup
+                            from categories in categoriesGroup.DefaultIfEmpty()
+                            where bankAccounts.Id == id && !bankAccounts.Deleted
                             select new Response(bankAccounts.Id,
                                                new AccountTypeDto(bankAccounts.AccountType.Id, bankAccounts.AccountType.Name),
                                                bankAccounts.CurrentValue,
@@ -43,8 +47,10 @@ public class GetBankAccountHandler
                                                bankAccounts.Transactions.Count,
                                                bankAccounts.Transactions.OrderByDescending(t => t.LastModifiedAt)
                                                                         .Take(10)
-                                                                        .Select(t => new TransactionDto(t.Id, t.Description, t.DoneAt, t.TransactionMethod.Name, new CategoryDto(t.Category.Id, t.Category.Name)))
-                                               .ToList())).FirstOrDefaultAsync(cancellationToken);
+                                                                        .Select(t => new TransactionDto(t.Id, t.Description, t.DoneAt, t.TransactionMethod.Name, t.Category != null 
+                                                                                                                                                                    ? new CategoryDto(t.Category.Id, t.Category.Name)
+                                                                                                                                                                    : null)).ToList(),
+                                               bankAccounts.Active)).FirstOrDefaultAsync(cancellationToken);
 
         if (result is null)
         {

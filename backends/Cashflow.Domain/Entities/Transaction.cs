@@ -5,9 +5,9 @@ namespace Cashflow.Domain.Entities;
 public class Transaction : OwnableEntity<Transaction>
 {
     public long? BankAccountId { get; init; }
-    public BankAccount BankAccount { get; init; }
+    public BankAccount? BankAccount { get; init; }
     public long? CategoryId { get; init; }
-    public Category Category { get; init; }
+    public Category? Category { get; init; }
     public string Description { get; init; }
     public DateTime DoneAt { get; init; }
     public short Month { get; init; }

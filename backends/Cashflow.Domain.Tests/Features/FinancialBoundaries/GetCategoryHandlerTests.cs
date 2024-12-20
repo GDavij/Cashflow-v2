@@ -39,16 +39,36 @@ public class GetCategoryHandlerTests
         var category = new Category("Test Category") 
         { 
             Id = 1, 
-            OwnerId = _authenticatedUser.Object.Id, 
+            OwnerId = _authenticatedUser.Object.Id
         };
         category.UseMaximumBudgetInvestmentOf(_faker.Random.Float(0, 1));
-        category.Transactions.Add(new Transaction());
+
+        var transactionMethod = new TransactionMethod
+        {
+            Id = 1,
+            Name = "Receive"
+        };
+
+        var transaction = new Transaction
+        {
+            Id = 1,
+            TransactionMethod = transactionMethod,
+            TransactionMethodId = transactionMethod.Id
+        };
+
+        category.Transactions.Add(transaction);
+
+        var transactionsMethods = new List<TransactionMethod> { transactionMethod }.AsQueryable().BuildMockDbSet();
+        _dbContext.Setup(c => c.TransactionMethods).Returns(transactionsMethods.Object);
         
         var categories = new List<Category> { category }.AsQueryable().BuildMockDbSet();
         _dbContext.Setup(c => c.Categories).Returns(categories.Object);
-        
+
         var transactions = category.Transactions.AsQueryable().BuildMockDbSet();
         _dbContext.Setup(c => c.Transactions).Returns(transactions.Object);
+
+        var bankAccounts = new List<BankAccount>().AsQueryable().BuildMockDbSet();
+        _dbContext.Setup(c => c.BankAccounts).Returns(bankAccounts.Object);
 
         // Act
         var result = await _handler.HandleAsync(category.Id, default);
