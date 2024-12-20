@@ -1,6 +1,6 @@
 # Cashflow V2
 
-TODO: Describes Project
+This project is inspired by [Cashflow](https://github.com/muriloebsantos/cashflow-api) Project.
 
 ## Features 
 
