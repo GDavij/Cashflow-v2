@@ -1,0 +1,69 @@
+<div class="w-screen rounded-sm flex flex-col items-center gap-6">
+
+  <section class="flex flex-col bg-white w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
+    <section class="flex justify-between items-end flex-wrap gap-4">
+      <div class="w-fit flex flex-col gap-2">
+        <h1 class="text-3xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">Categories</h1>
+        <div class="w-full motion-preset-slide-right-lg h-1 bg-blue-600 motion-duration-700 motion-delay-200"></div>
+        <h3 class="text-xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">Manage you finance boundaries
+        </h3>
+      </div>
+
+      <div class="flex gap-2 items-end">
+        <div class="flex flex-col motion-preset-slide-right-lg motion-delay-200">
+          <span>Categories</span>
+          <button [cdkMenuTriggerFor]="menu"
+            class="w-fit border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
+            currentCategory?.name ?? "No category found"}}</button>
+        </div>
+
+        <button
+          class="text-nowrap h-10 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 duration-100 transition-all active:motion-scale-in-[1.03]  text-white px-4 py-2 rounded-md motion-preset-slide-right-lg motion-delay-300">
+          Create Category
+        </button>
+      </div>
+    </section>
+
+    <section>
+      @if (isLoadingCurrentCategory) {
+      <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
+        <div class="w-12 h-12 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500"></div>
+      </div>
+      }
+      @else if (!isLoadingCurrentCategory && currentCategory) {
+      <section class="w-full h-96 flex motion-preset-fade motion-duration-1000 mt-24">
+
+      </section>
+      } @else {
+      <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
+        <span class="text-gray-500">No Category Selected</span>
+      </div>
+      }
+    </section>
+  </section>
+
+
+
+</div>
+
+
+<ng-template #menu>
+  <div
+    class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+    cdkMenu>
+    @if (categories.length > 0) {
+    @for(category of categories; track category.id) {
+    <button [class]="(category.active ? 'bg-slate-50' : 'bg-slate-300') + ' rounded-md p-2'" cdkMenuItem
+      (click)="viewCategory(category)">{{category.name}} -
+      @if (category.active) {
+      <span class="text-green-400 py-2 px-1 rounded-md"> Active </span>
+      } @else {
+      <span class="text-red-400 py-2 px-1 rounded-md"> Deactive </span>
+      }
+    </button>
+    }
+    } @else {
+    <span>No Category Found</span>
+    }
+  </div>
+</ng-template>
