@@ -2,7 +2,6 @@
 using Cashflow.Domain.Abstractions.RequestPipeline;
 using Cashflow.Domain.Entities;
 using Cashflow.Domain.Exceptions;
-using Cashflow.Domain.Features.FinancialBoundaries.GetCategory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +22,7 @@ public class GetCategoryHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Response(long Id, string Name, double? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, long TotalTransactionsRegistered, List<TransactionDto> LastTransactions, bool Active);
+    public record Response(long Id, string Name, double? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, long TotalTransactionsRegistered, bool Active);
 
     public async Task<Response> HandleAsync(long id, CancellationToken cancellationToken)
     {
@@ -38,15 +37,6 @@ public class GetCategoryHandler
                                                                           c.MaximumBudgetInvestment,
                                                                           c.MaximumMoneyInvestment,
                                                                           c.Transactions.Count,
-                                                                          c.Transactions.OrderByDescending(t => t.CreatedAt)
-                                                                                        .Take(10)
-                                                                                        .Select(t => new TransactionDto(t.Id,
-                                                                                                                        t.Description,
-                                                                                                                        t.DoneAt,
-                                                                                                                        t.TransactionMethod.Name,
-                                                                                                                        t.BankAccount != null
-                                                                                                                        ? new BankAccountDto(t.BankAccount.Id, t.BankAccount.Name)
-                                                                                                                        : null)).ToList(),
                                                                           c.Active))
                                                 .FirstOrDefaultAsync(cancellationToken);
 

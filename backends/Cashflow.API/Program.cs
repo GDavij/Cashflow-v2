@@ -8,6 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();
 
+
+builder.Services.AddCors(cfg =>
+{
+    cfg.AddDefaultPolicy(opt =>
+    {
+        opt.AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowAnyOrigin();
+    });
+});
+
 builder.Services.AddDomain()
                 .AddValidation();
 
@@ -28,6 +39,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
 app.MapControllers();
 
 app.MapGet("/", () =>

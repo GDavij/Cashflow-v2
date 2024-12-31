@@ -1,4 +1,5 @@
 ﻿using Cashflow.Domain.Features.FinancialBoundaries;
+using Cashflow.Domain.Features.FinancialBoundaries.GetCategoryUsageByYear;
 using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.GetBankAccount;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddScoped<GetCategoryHandler>();
         services.AddScoped<ListCategoriesHandler>();
         services.AddScoped<UpdateCategoryHandler>();
+        services.AddScoped<GetCategoryUsageByYearHandler>();
 
         services.AddScoped<CreateBankAccountHandler>();
         services.AddScoped<UpdateBankAccountHandler>();

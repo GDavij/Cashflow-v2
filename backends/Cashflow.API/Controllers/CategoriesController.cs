@@ -1,4 +1,5 @@
 ﻿using Cashflow.Domain.Features.FinancialBoundaries;
+using Cashflow.Domain.Features.FinancialBoundaries.GetCategoryUsageByYear;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,5 +66,15 @@ public class CategoriesController : ControllerBase
         }
 
         return BadRequest(validationResult.Errors);
+    }
+
+    [HttpGet("{id}/transactions/aggregate")]
+    [ProducesResponseType(typeof(GetCategoryUsageByYearHandler.Response), 200)]
+    public async Task<IActionResult> GetCategoryTransactionsAggregates([FromRoute] long id,
+                                                                       [FromQuery] GetCategoryUsageByYearHandler.Request request,
+                                                                       [FromServices] GetCategoryUsageByYearHandler handler,
+                                                                       CancellationToken cancellationToken)
+    {
+        return Ok(await handler.HandleAsync(id, request, cancellationToken));
     }
 }
