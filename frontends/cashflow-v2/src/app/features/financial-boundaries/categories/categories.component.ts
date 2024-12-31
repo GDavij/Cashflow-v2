@@ -8,11 +8,12 @@ import { ChartConfiguration, ChartData } from 'chart.js';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { monthFromIndex } from '../../../enums/MONTHS';
 import { CacheService } from '../../../services/cache.service';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-categories',
-  imports: [CdkMenuModule, CommonModule],
+  imports: [CdkMenuModule, CommonModule, RouterLink],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
 })
