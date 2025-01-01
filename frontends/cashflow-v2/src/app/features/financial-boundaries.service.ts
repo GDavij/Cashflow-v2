@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseHttpService } from '../abstractions/baseHttp.service';
 import { HttpClient } from '@angular/common/http';
-import { Category, CategoryListItem, CategoryTransactionsAggregate } from '../models/financial-boundaries/category';
+import { Category, CategoryListItem, CategoryTransactionsAggregate, SaveCategoryPayload } from '../models/financial-boundaries/category';
+import { EntitySavedResponse } from '../models/common';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +26,13 @@ export class FinancialBoundariesService extends BaseHttpService {
     return super.get<any>(`${category.id}/transactions/aggregate`, {
       year
     });
+  }
+
+  public saveCategory(category: SaveCategoryPayload): Observable<EntitySavedResponse> {
+    if (category.id) {
+      return super.post(category.id.toString(), category);
+    }
+
+    return super.post('', category);
   }
 }

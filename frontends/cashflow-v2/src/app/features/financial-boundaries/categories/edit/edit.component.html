@@ -11,10 +11,16 @@
         </h3>
       </div>
 
-      <button
-        class="text-nowrap h-10 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 duration-100 transition-all active:motion-scale-in-[1.03]  text-white px-4 py-2 rounded-md motion-preset-slide-right-lg motion-delay-300">
-        {{ id ? "Alter Category" : "Save Category" }}
-      </button>
+      <section class="flex flex-col justify-end items-end gap-2">
+        <label>
+
+          <app-button [disabled]="form.invalid || isSavingCategory" [loading]="isSavingCategory"
+            (click)="handleSubmit()">
+            {{ id ? "Alter Category" : "Save Category" }}
+          </app-button>
+        </label>
+      </section>
+
     </section>
 
     <section>
@@ -26,7 +32,7 @@
       @else {
       <section class=" w-full  h-96 motion-preset-fade motion-duration-1000 mt-24">
 
-        <form class="flex flex-col gap-4" [formGroup]="form">
+        <form class="flex flex-col gap-4" [formGroup]="form" (submit)="handleSubmit()">
           <label class="basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
             <span><span class="text-red-400">*</span> Name</span>
             <input placeholder="Eating..." formControlName="name"
@@ -47,7 +53,7 @@
           </label>
 
           <div class="flex gap-4 md:flex-row flex-col">
-            <div class="md:basis-1/4 basis-full flex flex-col motion-preset-slide-right-lg motion-delay-200">
+            <div class="md:basis-1/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
               <span><span class="text-red-400">*</span> Has Boundary</span>
               <button [cdkMenuTriggerFor]="menu"
                 class="w-full border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
@@ -60,6 +66,17 @@
               <span><span class="text-red-400">*</span> Money Limit (R$)</span>
               <input placeholder="500" formControlName="maximumMoneyInvestment" type="number"
                 class="w-full border-2 rounded-md outline-none focus:border-blue-500 border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+
+              <div class="flex flex-col gap-2">
+                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                  *ngIf="form.get('maximumMoneyInvestment')!.touched && form.get('maximumMoneyInvestment')!.hasError('required')">
+                  Money Limit Is Required</span>
+
+                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                  *ngIf="form.get('maximumMoneyInvestment')!.touched && form.get('maximumMoneyInvestment')!.hasError('min')">
+                  Money Limit must be R$0 or greater</span>
+
+              </div>
             </label>
             } @else if (hasBoundary == financialBoundaries[2]) {
 
@@ -67,6 +84,20 @@
               <span><span class="text-red-400">*</span> Percentage to consider (%) </span>
               <input placeholder="10" formControlName="maximumBudgetInvestment" type="number"
                 class="w-full border-2 rounded-md outline-none focus:border-blue-500 border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+
+              <div class="flex flex-col gap-2">
+                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                  *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('required')">
+                  Percentage Is Required</span>
+
+                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                  *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('min')">
+                  Percentage must be 0 or greater</span>
+
+                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                  *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('max')">
+                  Percentage must be 100 or less</span>
+              </div>
             </label>
             }
           </div>

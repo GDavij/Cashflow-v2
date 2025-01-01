@@ -23,3 +23,12 @@ export interface CategoryTransactionsAggregate {
     hasReachedLimit: boolean
   }[];
 }
+
+export interface SaveCategoryPayload {
+  id?: number;
+  name: string;
+  maximumBudgetInvestment?: number;
+  maximumMoneyInvestment?: number;
+  active: boolean;
+}
+
