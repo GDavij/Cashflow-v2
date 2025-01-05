@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +8,22 @@ export class CacheService {
   readonly cacheLocalStorageKey = 'LOCAL_CACHE';
   cacheMap: Map<string, any> = new Map();
 
-  constructor() {
-    this.syncWithLocalStorageValues();
-  }
+  constructor() { }
 
-  async getOrResolveTo<T>(resolve: () => Observable<T>, key: string): Promise<T> {
+  getOrResolveTo<T>(resolve: () => Observable<T>, key: string): { subject: Subject<T>, cancelSubscription: () => void } {
+    const subject = new Subject<T>;
+
     if (this.cacheMap.has(key)) {
-      return this.cacheMap.get(key);
+      setTimeout(() => subject.next(this.cacheMap.get(key)), 100)
+      return { subject, cancelSubscription: () => { } }
     }
 
-    const result = await firstValueFrom(resolve())
-    this.cacheMap.set(key, result);
+    const subscription = resolve().subscribe(result => {
+      this.cacheMap.set(key, result);
+      subject.next(result);
+    });
 
-    return result;
+    return { subject, cancelSubscription: () => subscription.unsubscribe() };
   }
 
   invalidate(key: string): boolean {
@@ -29,25 +32,5 @@ export class CacheService {
     }
 
     return false;
-  }
-
-  clearAll(key: string): boolean {
-    this.cacheMap.clear();
-    return true;
-  }
-
-  persistToLocalStorage() {
-    console.log({ ...this.cacheMap })
-    localStorage.setItem(this.cacheLocalStorageKey, JSON.stringify({ ...this.cacheMap }));
-  }
-
-  private syncWithLocalStorageValues() {
-    const cacheValue = localStorage.getItem(this.cacheLocalStorageKey);
-    if (!cacheValue) {
-      return;
-    }
-
-    const values = JSON.parse(cacheValue) as {};
-    this.cacheMap = new Map<any, any>(Object.entries(values));
   }
 }

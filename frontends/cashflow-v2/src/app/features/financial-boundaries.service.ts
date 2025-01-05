@@ -22,7 +22,11 @@ export class FinancialBoundariesService extends BaseHttpService {
     return super.get<Category>(category.id.toString());
   }
 
-  public getCategoryTransactionsAggregateForYear(category: CategoryListItem, year: number): Observable<CategoryTransactionsAggregate> {
+  public getCategoryById(id: string): Observable<Category> {
+    return super.get<Category>(id);
+  }
+
+  public getCategoryTransactionsAggregateForYear(category: Category, year: number): Observable<CategoryTransactionsAggregate> {
     return super.get<any>(`${category.id}/transactions/aggregate`, {
       year
     });
@@ -30,7 +34,7 @@ export class FinancialBoundariesService extends BaseHttpService {
 
   public saveCategory(category: SaveCategoryPayload): Observable<EntitySavedResponse> {
     if (category.id) {
-      return super.post(category.id.toString(), category);
+      return super.put(category.id.toString(), category);
     }
 
     return super.post('', category);

@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { DateHelper } from '../../helpers/date.helper';
 
 @Component({
   selector: 'app-bar-chart',
@@ -25,8 +26,9 @@ export class BarChartComponent {
     },
   };
 
+  @Input({ required: true }) currentDate!: DateHelper
   @Input({ required: true }) dataSource!: any;
-  @Input({ required: true }) transformAction!: (dataSource: any) => ChartData<'bar'>
+  @Input({ required: true }) transformAction!: (dateHelper: DateHelper, dataSource: any) => ChartData<'bar'>
 
   @ViewChild(BaseChartDirective)
   barChartViewRef: BaseChartDirective<'bar'> | undefined;

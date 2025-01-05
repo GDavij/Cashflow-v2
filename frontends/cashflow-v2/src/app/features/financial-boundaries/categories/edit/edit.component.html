@@ -1,4 +1,7 @@
 <div class="w-screen rounded-sm flex flex-col items-center gap-6">
+  <div class="w-full rounded-sm flex flex-grow-0 px-6 py-4 mb-2 sm:w-3/4">
+    <app-button routerLink="/categories">Return</app-button>
+  </div>
 
   <section class="flex flex-col bg-white w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
     <section class="flex justify-between items-end flex-wrap gap-4">
@@ -11,14 +14,14 @@
         </h3>
       </div>
 
-      <section class="flex flex-col justify-end items-end gap-2">
-        <label>
+      <section class="flex flex-wrap-reverse justify-end items-end gap-2">
+        <app-button *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory" (click)="resetForm()">
+          Reset values
+        </app-button>
 
-          <app-button [disabled]="form.invalid || isSavingCategory" [loading]="isSavingCategory"
-            (click)="handleSubmit()">
-            {{ id ? "Alter Category" : "Save Category" }}
-          </app-button>
-        </label>
+        <app-button [disabled]="form.invalid || isSavingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
+          {{ id ? "Alter Category" : "Save Category" }}
+        </app-button>
       </section>
 
     </section>
@@ -92,7 +95,7 @@
 
                 <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('min')">
-                  Percentage must be 0 or greater</span>
+                  Percentage must be 1 or greater</span>
 
                 <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('max')">
@@ -101,6 +104,30 @@
             </label>
             }
           </div>
+          <label class="flex flex-col motion-preset-slide-right-lg motion-delay-200" *ngIf="fetchedCategory">
+            <span>Active</span>
+            <button [cdkMenuTriggerFor]="menu"
+              class="w-full border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{form.get('active')!.value
+              ? "Active" : "Deactive"}}</button>
+
+            <ng-template #menu>
+              <div
+                class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+                cdkMenu>
+                <button
+                  [class]="((this.form.get('active')!.value)  == true ? 'bg-slate-200' : 'bg-slate-50') + ' rounded-md p-2'"
+                  cdkMenuItem (click)="activate()">
+                  <span class="text-green-400 font-semibold py-2 px-1 rounded-md"> Active </span>
+                </button>
+                <button
+                  [class]="((this.form.get('active')!.value) == false ? 'bg-slate-200' : 'bg-slate-50') + ' rounded-md p-2'"
+                  cdkMenuItem (click)="deactivate()">
+                  <span class="text-red-400 font-semibold py-2 px-1 rounded-md"> Deactive </span>
+                </button>
+              </div>
+            </ng-template>
+
+          </label>
         </form>
       </section>
 
@@ -116,7 +143,7 @@
 
 <ng-template #menu>
   <div
-    class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+    class="bg-white shadow-md flex flex-col min-w-44 max-h- gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
     cdkMenu>
 
     @for (boundary of financialBoundaries; track boundary) {

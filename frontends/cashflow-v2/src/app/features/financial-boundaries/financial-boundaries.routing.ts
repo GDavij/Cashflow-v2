@@ -10,5 +10,9 @@ export const financialBoundariesRoutes: Routes = [
   {
     path: 'categories/edit',
     component: EditComponent
+  },
+  {
+    path: 'categories/edit/:id',
+    component: EditComponent
   }
 ];

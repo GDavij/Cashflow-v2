@@ -15,13 +15,15 @@ export interface Category {
 
 export interface CategoryTransactionsAggregate {
   year: number;
-  transactionsUsageAggregate: {
-    month: number,
-    totalTransactions: number,
-    totalDeposit: number,
-    totalWithdrawl: number,
-    hasReachedLimit: boolean
-  }[];
+  transactionsUsageAggregate: TransactionAggregate[];
+}
+
+export interface TransactionAggregate {
+  month: number,
+  totalTransactions: number,
+  totalDeposit: number,
+  totalWithdrawl: number,
+  hasReachedLimit: boolean
 }
 
 export interface SaveCategoryPayload {

@@ -1,32 +1,57 @@
-import { Component, OnInit, resource, signal, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FinancialBoundariesService } from '../../financial-boundaries.service';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { Category, CategoryListItem, CategoryTransactionsAggregate } from '../../../models/financial-boundaries/category';
-import { catchError, firstValueFrom, of, retry, tap } from 'rxjs';
-import { BaseChartDirective, provideCharts } from 'ng2-charts';
-import { ChartConfiguration, ChartData } from 'chart.js';
+import { catchError, of, retry } from 'rxjs';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { monthFromIndex } from '../../../enums/MONTHS';
 import { CacheService } from '../../../services/cache.service';
-import { RouterLink } from '@angular/router';
-
+import { Router, RouterLink } from '@angular/router';
+import { ButtonComponent } from "../../../components/button/button.component";
+import { DateHelper } from '../../../helpers/date.helper';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { matArrowBackIosRound, matArrowForwardIosRound } from '@ng-icons/material-icons/round';
 
 @Component({
   selector: 'app-categories',
-  imports: [CdkMenuModule, CommonModule, RouterLink],
+  imports: [CdkMenuModule, CommonModule, RouterLink, ButtonComponent, NgIcon],
+  viewProviders: [provideIcons({ matArrowBackIosRound, matArrowForwardIosRound })],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent implements OnInit {
-  currentYear = 2024;
+  currentDate = new DateHelper();
 
   categories: CategoryListItem[] = [];
 
   isLoadingCurrentCategory: boolean = false;
+  isLoadingTransactions: boolean = false;
   currentCategory: Category | null = null;
-  currentcategoryTransactionsAggregate: CategoryTransactionsAggregate | null = null;
+  private _currentcategoryTransactionsAggregate: CategoryTransactionsAggregate | null = null;
 
-  constructor(private readonly _financialBoundariesService: FinancialBoundariesService, private readonly _cacheService: CacheService) { }
+  get totalTransactionsMadeInMonth() {
+    return this._currentcategoryTransactionsAggregate!.transactionsUsageAggregate.find(t => t.month == this.currentDate.getMonth())!.totalTransactions;
+  }
+
+  get totalDepositInMonth() {
+    return this._currentcategoryTransactionsAggregate!.transactionsUsageAggregate.find(t => t.month == this.currentDate.getMonth())!.totalDeposit;
+  }
+
+  get totalWithdrawlInMonth() {
+    return this._currentcategoryTransactionsAggregate!.transactionsUsageAggregate.find(t => t.month == this.currentDate.getMonth())!.totalWithdrawl;
+  }
+
+  get alerts(): string[] {
+    const alerts: string[] = [];
+    for (let transaction of this._currentcategoryTransactionsAggregate!.transactionsUsageAggregate) {
+      if (transaction.hasReachedLimit) {
+        this.alerts.push(`You cross the boundary for this category in ${DateHelper.getMonthName(transaction.month)} of ${this._currentcategoryTransactionsAggregate!.year}`)
+      }
+    }
+
+    return alerts;
+  }
+
+  constructor(private readonly _financialBoundariesService: FinancialBoundariesService, private readonly _cacheService: CacheService, private readonly _router: Router) { }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -48,41 +73,77 @@ export class CategoriesComponent implements OnInit {
     })
   }
 
-  async viewCategory(selectedCategory: CategoryListItem) {
-    this.isLoadingCurrentCategory = true
-    const categoryPromise = this._cacheService.getOrResolveTo(() => this._financialBoundariesService.getCategory(selectedCategory).pipe(
-      retry(3),
-      catchError(httpErr => {
-        console.error({ httpErr });
-
-        return of(null);
-      })), `category-${selectedCategory.id}`)
-
-    const categoryTransactionsPromise = this._cacheService.getOrResolveTo(() => this._financialBoundariesService.getCategoryTransactionsAggregateForYear(selectedCategory, this.currentYear).pipe(
-      retry(3),
-      catchError(httpError => {
-        console.error({ httpError })
-        return of(null);
-      })), `category-${selectedCategory.id}-transactions-${this.currentYear}`);
-
-    const [category, transactions] = await Promise.all([categoryPromise, categoryTransactionsPromise]);
-
-    this.currentCategory = category;
-    this.currentcategoryTransactionsAggregate = transactions;
-    setTimeout(() => {
+  viewCategory(selectCatgory: CategoryListItem) {
+    this.isLoadingCurrentCategory = true;
+    const { subject } = this._cacheService.getOrResolveTo(() => this._financialBoundariesService.getCategory(selectCatgory).pipe(retry(3), catchError(err => {
+      console.error([err]);
       this.isLoadingCurrentCategory = false;
-    }, 200)
+      return of(null);
+    })), `category-${selectCatgory.id}`);
+
+    subject.subscribe(result => {
+      this.currentCategory = result;
+      this.isLoadingCurrentCategory = false;
+      this.viewTransactions(this.currentCategory!);
+    })
+
   }
 
-  parseChart(currentCategoryTransactionsAggregate: CategoryTransactionsAggregate): ChartData<'bar'> {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  viewTransactions(category: Category) {
+    this.isLoadingTransactions = true;
 
-    return {
-      labels: months,
-      datasets: [
-        // { data: this.currentCategoryTransactionsAggregate!.transactionsUsageAggregate.map(agg => agg.totalDeposit), label: 'Deposit' },
-        // { data: this.currentCategoryTransactionsAggregate!.transactionsUsageAggregate.map(agg => agg.totalWithdrawl), label: 'Withdrawl' }
-      ]
-    };
+    const { subject } = this._cacheService.getOrResolveTo(() => this._financialBoundariesService.getCategoryTransactionsAggregateForYear(category, this.currentDate.getYear()).pipe(retry(3), catchError(err => {
+      console.error({ err });
+      this.isLoadingTransactions = false;
+      return of(null)
+    })), `category-${category.id}-transactions-${this.currentDate.getYear()}`);
+
+    subject.subscribe(result => {
+      this._currentcategoryTransactionsAggregate = result;
+
+      setTimeout(() => {
+
+        this.isLoadingTransactions = false;
+      }, 100)
+    })
   }
+
+  editCurrentCategory() {
+    this._router.navigate(['/categories', 'edit', this.currentCategory!.id]);
+  }
+
+  nextMonth() {
+    this.currentDate.goToNextMonth();
+    this.viewTransactions(this.currentCategory!);
+  }
+
+  previousMonth() {
+    this.currentDate.goToPreviousMonth();
+    this.viewTransactions(this.currentCategory!);
+  }
+
+  nextYear() {
+    this.currentDate.goToNextYear();
+    this.viewTransactions(this.currentCategory!);
+  }
+
+  previousYear() {
+    this.currentDate.goToPreviousYear();
+    this.viewTransactions(this.currentCategory!);
+  }
+
+  asPercentage(value: number) {
+    return value * 100;
+  }
+
+  // transformTransactionsAggregate(currentDate: DateHelper, currentCategoryTransactionsAggregate: TransactionAggregate): ChartData<'bar'> {
+  //   console.log({ currentCategoryTransactionsAggregate })
+  //   return {
+  //     labels: [currentDate.getMonthName()],
+  //     datasets: [
+  //       { data: [currentCategoryTransactionsAggregate.totalDeposit], label: 'Deposit' },
+  //       { data: [currentCategoryTransactionsAggregate.totalWithdrawl], label: 'Withdrawl' }
+  //     ]
+  //   };
+  // }
 }

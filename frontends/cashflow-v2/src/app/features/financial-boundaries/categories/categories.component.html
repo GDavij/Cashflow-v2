@@ -15,12 +15,36 @@
           <button [cdkMenuTriggerFor]="menu"
             class="w-fit border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
             currentCategory?.name ?? "No category found"}}</button>
+
+          <ng-template #menu>
+            <div
+              class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+              cdkMenu>
+              @if (categories.length > 0) {
+              @for(category of categories; track category.id) {
+              <button [class]="(category.active ? 'bg-slate-50' : 'bg-slate-300') + ' rounded-md p-2'" cdkMenuItem
+                (click)="viewCategory(category)">{{category.name}} -
+                @if (category.active) {
+                <span class="text-green-400 py-2 px-1 rounded-md"> Active </span>
+                } @else {
+                <span class="text-red-400 py-2 px-1 rounded-md"> Deactive </span>
+                }
+              </button>
+              }
+              } @else {
+              <span>No Category Found</span>
+              }
+            </div>
+          </ng-template>
+
         </div>
+        <app-button (click)="editCurrentCategory()" *ngIf="currentCategory">Edit Category</app-button>
 
         <button routerLink="edit"
           class="text-nowrap h-10 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 duration-100 transition-all active:motion-scale-in-[1.03]  text-white px-4 py-2 rounded-md motion-preset-slide-right-lg motion-delay-300">
           Create Category
         </button>
+
       </div>
     </section>
 
@@ -31,8 +55,111 @@
       </div>
       }
       @else if (!isLoadingCurrentCategory && currentCategory) {
-      <section class="w-full h-96 flex motion-preset-fade motion-duration-1000 mt-24">
+      <section class="w-full min-h-96 flex motion-preset-fade motion-duration-1000 mt-24">
+        <section class="flex flex-col items-center justify-between w-full">
+          <div class="w-full flex flex-col gap-2">
+            <div class=" flex gap-4 justify-between w-full">
+              <app-button (click)="previousYear()">
+                <ng-icon name="matArrowBackIosRound" />
+              </app-button>
+              <h3 class="text-3xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">{{ currentDate.getYear()
+                }}</h3>
+              <app-button (click)="nextYear()">
+                <ng-icon name="matArrowForwardIosRound" />
+              </app-button>
+            </div>
+            <div
+              class="w-full motion-preset-slide-right-lg h-[0.15rem] bg-blue-600 motion-duration-700 motion-delay-200">
+            </div>
+            <div class="flex gap-4 justify-between">
+              <app-button (click)="previousMonth()">
+                <ng-icon name="matArrowBackIosRound" />
+              </app-button>
+              <h3 class="text-3xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">{{
+                currentDate.getMonthName() }}</h3>
+              <app-button (click)="nextMonth()">
+                <ng-icon name="matArrowForwardIosRound" />
+              </app-button>
+            </div>
 
+            <div class="flex flex-col gap-4 mt-4">
+              <div class="flex flex-col gap-2">
+                <h1 class="text-xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">Status</h1>
+                <div class="w-full motion-preset-slide-right-lg h-1 bg-blue-600 motion-duration-700 motion-delay-200">
+                </div>
+                <h3 class="text-lg text-gray-700 motion-preset-slide-left-lg motion-delay-200">What we have got</h3>
+              </div>
+
+              @if (currentCategory.maximumBudgetInvestment) {
+              <div
+                class="text-gray-600 font-semibold text-lg flex-col flex gap-2 justify-center items-center border-2 border-gray-100 px-2 py-4 rounded-md motion-preset-fade-md motion-duration-700">
+                You can't spend more than {{asPercentage(currentCategory.maximumBudgetInvestment)}}% of everthing that
+                you
+                deposit by month
+              </div>
+              } @else if (currentCategory.maximumMoneyInvestment) {
+              <div
+                class="text-gray-600 font-semibold text-lg flex-col flex gap-2 justify-center items-center border-2 border-gray-100 px-2 py-4 rounded-md motion-preset-fade-md motion-duration-700">
+                You can't spend more than R${{currentCategory.maximumMoneyInvestment}} of everthing that
+                you
+                deposit by month
+              </div>
+              } @else {
+              <div
+                class="text-gray-600 font-semibold text-lg flex-col flex gap-2 justify-center items-center border-2 border-gray-100 px-2 py-4 rounded-md motion-preset-fade-md motion-duration-700">
+                You Have Defined no Boundaries</div>
+              }
+            </div>
+
+            @if (isLoadingTransactions) {
+            <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
+              <div class="w-12 h-12 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500">
+              </div>
+            </div>
+            } @else {
+            <div class="flex justify-between gap-4">
+              <div
+                class="flex-col flex gap-2 justify-center items-center border-2 border-gray-100 px-2 py-4 rounded-md motion-preset-fade-md motion-duration-700">
+                <h4>Total Deposited in {{ currentDate.getMonthName() }} of {{ currentDate.getYear() }}</h4>
+                <div class="w-full h-[0.02rem] bg-blue-500"></div>
+                <div>{{ totalDepositInMonth }}</div>
+              </div>
+
+              <div
+                class="flex-col flex gap-2 justify-center items-center border-2 border-gray-100 px-2 py-4 rounded-md motion-preset-fade-md motion-duration-700">
+                <h4>Total Withdrawn in {{ currentDate.getMonthName() }} of {{ currentDate.getYear() }}</h4>
+                <div class="w-full h-[0.02rem] bg-blue-500"></div>
+                <div>{{ totalWithdrawlInMonth }}</div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-6">
+
+              <div class="flex flex-col gap-2">
+                <h1 class="text-xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">Alerts</h1>
+                <div class="w-full motion-preset-slide-right-lg h-1 bg-blue-600 motion-duration-700 motion-delay-200">
+                </div>
+                <h3 class="text-lg text-gray-700 motion-preset-slide-left-lg motion-delay-200">What to stay alert about
+                </h3>
+                @for(alert of alerts; track alert) {
+                <p class="text-yellow-200 font-semibold">{{alert}}</p>
+                }
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <h1 class="text-xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">Transactions</h1>
+                <div class="w-full motion-preset-slide-right-lg h-1 bg-blue-600 motion-duration-700 motion-delay-200">
+                </div>
+                <h3 class="text-lg text-gray-700 motion-preset-slide-left-lg motion-delay-200">You have registered a
+                  total
+                  of
+                  {{totalTransactionsMadeInMonth}} transactions in {{currentDate.getMonthName()}} of
+                  {{currentDate.getYear()}}</h3>
+
+              </div>
+            </div>
+            }
+          </div>
+        </section>
       </section>
       } @else {
       <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
@@ -45,25 +172,3 @@
 
 
 </div>
-
-
-<ng-template #menu>
-  <div
-    class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
-    cdkMenu>
-    @if (categories.length > 0) {
-    @for(category of categories; track category.id) {
-    <button [class]="(category.active ? 'bg-slate-50' : 'bg-slate-300') + ' rounded-md p-2'" cdkMenuItem
-      (click)="viewCategory(category)">{{category.name}} -
-      @if (category.active) {
-      <span class="text-green-400 py-2 px-1 rounded-md"> Active </span>
-      } @else {
-      <span class="text-red-400 py-2 px-1 rounded-md"> Deactive </span>
-      }
-    </button>
-    }
-    } @else {
-    <span>No Category Found</span>
-    }
-  </div>
-</ng-template>
