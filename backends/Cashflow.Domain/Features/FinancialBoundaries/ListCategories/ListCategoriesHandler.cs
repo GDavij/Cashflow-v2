@@ -27,8 +27,10 @@ public class ListCategoriesHandler
         _logger.LogInformation("Attemping to list categories for user with id {0}.", _authenticatedUser.Id);
 
         var result = await _dbContext.Categories.Where(c => c.OwnerId == _authenticatedUser.Id)
-                                                .Select(c => new Response(c.Id, c.Name, c.Active))
-                                                .ToListAsync(cancellationToken);
+                                                                .OrderByDescending(c => c.Active)
+                                                                .ThenBy(c => c.Name)
+                                                                .Select(c => new Response(c.Id, c.Name, c.Active))
+                                                                .ToListAsync(cancellationToken);
 
         _logger.LogInformation("Listed {0} categories for user with id {1}.", result.Count, _authenticatedUser.Id);
 

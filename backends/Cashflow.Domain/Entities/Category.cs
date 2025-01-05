@@ -49,7 +49,7 @@ public class Category : OwnableEntity<Category>
         RaiseEvent(new RemovedMaximumMoneyInvestmentBoundaryEvent(this));
     }
 
-    public void UseMaximumBudgetInvestmentOf(float maxBudgetInvestmentPercent)
+    public void UseMaximumBudgetInvestmentOf(double maxBudgetInvestmentPercent)
     {
         MaximumBudgetInvestment = maxBudgetInvestmentPercent;
         RaiseEvent(new DefinedMaximumBudgetInvestmentPercentEvent(this));
@@ -65,12 +65,7 @@ public class Category : OwnableEntity<Category>
         MaximumBudgetInvestment = null;
         RaiseEvent(new RemovedMaximumBudgetInvestmentPercentBoundaryEvent(this));
     }
-
-    public int GetTotalTransactionsMadeInMonth(short month)
-    {
-        return Transactions.Count(t => t.Month == month);
-    }
-
+    
     public decimal GetTotalDepositInMonth(short month)
     {
         decimal depositTotal = 0.0M;

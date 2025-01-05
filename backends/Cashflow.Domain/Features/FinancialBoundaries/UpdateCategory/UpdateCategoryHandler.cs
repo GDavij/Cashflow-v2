@@ -24,7 +24,7 @@ public class UpdateCategoryHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, bool Active);
+    public record Request(string Name, double? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment, bool Active);
     public record Response(long Id);
 
     public async Task<Response> HandleAsync(long id, Request request)

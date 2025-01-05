@@ -20,7 +20,7 @@ public class CreateCategoryHandler
         _authenticatedUser = authenticatedUser;
     }
 
-    public record Request(string Name, float? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment);
+    public record Request(string Name, double? MaximumBudgetInvestment, decimal? MaximumMoneyInvestment);
     public record Response(long Id);
 
     public async Task<Response> HandleAsync(Request request)
