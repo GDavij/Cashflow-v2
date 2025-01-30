@@ -47,7 +47,7 @@ public class CreateBankAccountHandler
         {
             bankAccount = new BankAccount(request.AccountType, request.Name);
             
-            // Update to create a transaction into bank account
+            // Update to create a transaction into bank account via events
         }
         else
         {
