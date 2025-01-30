@@ -26,17 +26,15 @@ export class FinancialBoundariesService extends BaseHttpService {
     return super.get<Category>(id);
   }
 
-  public getCategoryTransactionsAggregateForYear(category: Category, year: number): Observable<CategoryTransactionsAggregate> {
-    return super.get<any>(`${category.id}/transactions/aggregate`, {
-      year
-    });
-  }
-
   public saveCategory(category: SaveCategoryPayload): Observable<EntitySavedResponse> {
     if (category.id) {
       return super.put(category.id.toString(), category);
     }
 
     return super.post('', category);
+  }
+
+  public deleteCategory(category: Category): Observable<void> {
+    return super.delete(category.id.toString());
   }
 }

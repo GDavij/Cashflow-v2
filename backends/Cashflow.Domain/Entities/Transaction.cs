@@ -15,4 +15,5 @@ public class Transaction : OwnableEntity<Transaction>
     public TransactionMethod TransactionMethod { get; init; }
     public decimal Value { get; init; }
     public int Year { get; init; }
+
 }

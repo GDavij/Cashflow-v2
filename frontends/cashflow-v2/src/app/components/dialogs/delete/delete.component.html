@@ -1,0 +1,12 @@
+<section class="flex bg-white-0 min-w-72 min-h-52 flex-col px-6 py-4 justify-between">
+    <div class="flex flex-col gap-2">
+        <h4 class="text-xl text-primary">
+            {{message}}
+        </h4>
+        <span class="w-full h-1 bg-primary-active rounded-md"></span>
+    </div>
+    <div class="flex gap-6 justify-center items-end mt-6 h-full">
+        <app-button className="bg-error hover:bg-error-hover active:bg-error-active min-w-36" (click)="answer(false)">No</app-button>
+        <app-button className="bg-success hover:bg-success-hover active:bg-success-active min-w-36" (click)="answer(true)">Yes</app-button>
+    </div>
+</section>

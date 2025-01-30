@@ -9,6 +9,8 @@ import { ButtonComponent } from "../../../../components/button/button.component"
 import { FinancialBoundariesService } from '../../../financial-boundaries.service';
 import { Category, SaveCategoryPayload } from '../../../../models/financial-boundaries/category';
 import { CacheService } from '../../../../services/cache.service';
+import { Dialog } from '@angular/cdk/dialog';
+import { DeleteComponent } from '../../../../components/dialogs/delete/delete.component';
 
 @Component({
   selector: 'app-edit',
@@ -19,9 +21,11 @@ import { CacheService } from '../../../../services/cache.service';
 export class EditComponent implements OnInit {
   readonly financialBoundaries: FINANCIAL_BOUNDARIES[] = [FINANCIAL_BOUNDARIES.NONE, FINANCIAL_BOUNDARIES.MONEY, FINANCIAL_BOUNDARIES.PERCENTAGE_OVER_DEPOSIT];
   fetchedCategory: Category | null = null;
-
+  
   isLoadingCurrentCategory: boolean = false;
   isSavingCategory: boolean = false;
+  isDeletingCategory: boolean = false;
+
   hasBoundary: FINANCIAL_BOUNDARIES = FINANCIAL_BOUNDARIES.NONE;
   form!: FormGroup;
 
@@ -30,7 +34,8 @@ export class EditComponent implements OnInit {
     private readonly _router: Router,
     private readonly _fb: FormBuilder,
     private readonly _financialBoundariesService: FinancialBoundariesService,
-    private readonly _cacheService: CacheService) { }
+    private readonly _cacheService: CacheService,
+    private readonly _dialog: Dialog) { }
 
   get id(): string | null {
     return this._activatedRoute.snapshot.paramMap.get('id');
@@ -161,6 +166,28 @@ export class EditComponent implements OnInit {
 
   asPercentage(value: number) {
     return value * 100;
+  }
+
+
+  openDeleteDialog() {
+    const dialogRef = this._dialog.open<boolean>(DeleteComponent, {
+      data: `Are you sure about deleting category ${this.form.get('name')?.value}`
+    });
+
+    dialogRef.closed.subscribe((shouldDelete) => {
+      if (shouldDelete) {
+        this.isDeletingCategory = true;
+        this.form.disable();
+        this._financialBoundariesService.deleteCategory(this.fetchedCategory!).pipe(retry(3), catchError(httpError => {
+          console.error({ httpError });
+          return of(null)
+        })).subscribe(() => {
+          this._router.navigate(['/categories']);
+        });
+      }
+
+      return;      
+    })
   }
 
   private asPercentualOrUndefined(value: number | undefined) {

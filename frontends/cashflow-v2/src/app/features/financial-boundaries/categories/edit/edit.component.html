@@ -3,23 +3,23 @@
     <app-button routerLink="/categories">Return</app-button>
   </div>
 
-  <section class="flex flex-col bg-white w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
+  <section class="flex flex-col bg-white-0 w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
     <section class="flex justify-between items-end flex-wrap gap-4">
       <div class="w-fit flex flex-col gap-2">
-        <h1 class="text-3xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">{{id ? "Edit" : "Create"}}
+        <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">{{id ? "Edit" : "Create"}}
           Category</h1>
-        <div class="w-full motion-preset-slide-right-lg h-1 bg-blue-600 motion-duration-700 motion-delay-200"></div>
-        <h3 class="text-xl text-gray-700 motion-preset-slide-left-lg motion-delay-200">
+        <div class="w-full motion-preset-slide-right-lg h-1 bg-primary-active motion-duration-700 motion-delay-200"></div>
+        <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">
           {{id ? "Stay Alert" : "Keep Alert"}} About your boundaries
         </h3>
       </div>
 
       <section class="flex flex-wrap-reverse justify-end items-end gap-2">
-        <app-button *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory" (click)="resetForm()">
+        <app-button *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" (click)="resetForm()">
           Reset values
         </app-button>
 
-        <app-button [disabled]="form.invalid || isSavingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
+        <app-button [disabled]="form.invalid || isSavingCategory || isDeletingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
           {{ id ? "Alter Category" : "Save Category" }}
         </app-button>
       </section>
@@ -29,27 +29,27 @@
     <section>
       @if (id && isLoadingCurrentCategory) {
       <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
-        <div class="w-12 h-12 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500"></div>
+        <div class="w-12 h-12 border-4 border-t-4 border-white-400 rounded-full animate-spin border-t-primary"></div>
       </div>
       }
       @else {
       <section class=" w-full  h-96 motion-preset-fade motion-duration-1000 mt-24">
 
         <form class="flex flex-col gap-4" [formGroup]="form" (submit)="handleSubmit()">
-          <label class="basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-            <span><span class="text-red-400">*</span> Name</span>
+          <label class="basis-full flex flex-col">
+            <span class="text-white-800"><span class="text-required">*</span> Name</span>
             <input placeholder="Eating..." formControlName="name"
-              class="w-full border-2 rounded-md outline-none focus:border-blue-500 border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+              class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
             <div class="flex flex-col gap-2">
-              <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+              <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                 *ngIf="form.get('name')!.touched && form.get('name')!.hasError('required')">
                 Name Is Required</span>
 
-              <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+              <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                 *ngIf="form.get('name')!.touched && form.get('name')!.hasError('minlength')">
                 Name must have at least 2 characters</span>
 
-              <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+              <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                 *ngIf="form.get('name')!.touched && form.get('name')!.hasError('maxlength')">
                 Name must have a max of 60 characters</span>
             </div>
@@ -57,25 +57,25 @@
 
           <div class="flex gap-4 md:flex-row flex-col">
             <div class="md:basis-1/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span><span class="text-red-400">*</span> Has Boundary</span>
+              <span class="text-white-800"><span class="text-required">*</span> Has Boundary</span>
               <button [cdkMenuTriggerFor]="menu"
-                class="w-full border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
+                class="w-full border-2 rounded-md border-white-300 focus:border-primary-active shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
                 hasBoundary }}</button>
             </div>
 
             @if (hasBoundary == financialBoundaries[1]) {
 
             <label class="md:basis-3/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span><span class="text-red-400">*</span> Money Limit (R$)</span>
+              <span class="text-white-800"><span class="text-required">*</span> Money Limit (R$)</span>
               <input placeholder="500" formControlName="maximumMoneyInvestment" type="number"
-                class="w-full border-2 rounded-md outline-none focus:border-blue-500 border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+                class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
 
               <div class="flex flex-col gap-2">
-                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumMoneyInvestment')!.touched && form.get('maximumMoneyInvestment')!.hasError('required')">
                   Money Limit Is Required</span>
 
-                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumMoneyInvestment')!.touched && form.get('maximumMoneyInvestment')!.hasError('min')">
                   Money Limit must be R$0 or greater</span>
 
@@ -84,45 +84,46 @@
             } @else if (hasBoundary == financialBoundaries[2]) {
 
             <label class="md:basis-3/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span><span class="text-red-400">*</span> Percentage to consider (%) </span>
+              <span class="text-white-800"><span class="text-required">*</span> Percentage to consider (%) </span>
               <input placeholder="10" formControlName="maximumBudgetInvestment" type="number"
-                class="w-full border-2 rounded-md outline-none focus:border-blue-500 border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+                class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
 
               <div class="flex flex-col gap-2">
-                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('required')">
                   Percentage Is Required</span>
 
-                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('min')">
                   Percentage must be 1 or greater</span>
 
-                <span class="text-red-400 motion-preset-slide-down-md motion-duration-1000"
+                <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('max')">
                   Percentage must be 100 or less</span>
               </div>
             </label>
             }
           </div>
-          <label class="flex flex-col motion-preset-slide-right-lg motion-delay-200" *ngIf="fetchedCategory">
-            <span>Active</span>
+          <label class="flex flex-col" *ngIf="fetchedCategory">
+            <span class="text-white-800"><span class="text-required">*</span> Active</span>
             <button [cdkMenuTriggerFor]="menu"
-              class="w-full border-2 rounded-md border-gray-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{form.get('active')!.value
+              class="w-full border-2 rounded-md border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{form.get('active')!.value
               ? "Active" : "Deactive"}}</button>
 
             <ng-template #menu>
               <div
-                class="bg-white shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+                class="bg-white-0 shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-white-50 motion-preset-slide-down-md p-2"
                 cdkMenu>
                 <button
                   [class]="((this.form.get('active')!.value)  == true ? 'bg-slate-200' : 'bg-slate-50') + ' rounded-md p-2'"
-                  cdkMenuItem (click)="activate()">
-                  <span class="text-green-400 font-semibold py-2 px-1 rounded-md"> Active </span>
+                  cdkMenuItem (click)="activate()"
+                  class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold">
+                   Active 
                 </button>
                 <button
-                  [class]="((this.form.get('active')!.value) == false ? 'bg-slate-200' : 'bg-slate-50') + ' rounded-md p-2'"
+                  class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold"
                   cdkMenuItem (click)="deactivate()">
-                  <span class="text-red-400 font-semibold py-2 px-1 rounded-md"> Deactive </span>
+                  Deactive 
                 </button>
               </div>
             </ng-template>
@@ -130,7 +131,9 @@
           </label>
         </form>
       </section>
-
+      @if (fetchedCategory) {
+        <app-button (click)="openDeleteDialog()" className="bg-error hover:bg-error-hover active:bg-error-active" [loading]="isDeletingCategory" [disabled]="isDeletingCategory"> Delete Category</app-button>
+      }
       }
     </section>
   </section>
@@ -143,11 +146,11 @@
 
 <ng-template #menu>
   <div
-    class="bg-white shadow-md flex flex-col min-w-44 max-h- gap-2 rounded-md translate-y-2 border-t border-t-gray-50 motion-preset-slide-down-md p-2"
+    class="bg-white-0 shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-white-50 motion-preset-slide-down-md p-2"
     cdkMenu>
 
     @for (boundary of financialBoundaries; track boundary) {
-    <button class="rounded-md p-2 border-2 border-gray-50 hover:bg-gray-200 transition-all font-semibold" cdkMenuItem
+    <button class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold" cdkMenuItem
       (click)="changeBoundaryTo(boundary)">{{boundary}} </button>
     }
   </div>
