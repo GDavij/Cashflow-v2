@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { CdkMenuModule } from '@angular/cdk/menu';
-import { FINANCIAL_BOUNDARIES } from '../../../../enums/FINANCIAL_BOUNDARIES';
+import { FINANCIAL_BOUNDARIES } from '../../../../../enums/FINANCIAL_BOUNDARIES';
 import { CommonModule, NgIf } from '@angular/common';
 import { catchError, of, retry, tap } from 'rxjs';
-import { ButtonComponent } from "../../../../components/button/button.component";
-import { FinancialBoundariesService } from '../../../financial-boundaries.service';
-import { Category, SaveCategoryPayload } from '../../../../models/financial-boundaries/category';
-import { CacheService } from '../../../../services/cache.service';
+import { ButtonComponent } from "../../../../../components/button/button.component";
+import { FinancialBoundariesService } from '../../../../financial-boundaries.service';
+import { Category, SaveCategoryPayload } from '../../../../../models/financial-boundaries/category';
+import { CacheService } from '../../../../../services/cache.service';
 import { Dialog } from '@angular/cdk/dialog';
-import { DeleteComponent } from '../../../../components/dialogs/delete/delete.component';
+import { DeleteComponent } from '../../../../../components/dialogs/delete/delete.component';
 
 @Component({
   selector: 'app-edit',
@@ -73,7 +73,6 @@ export class EditComponent implements OnInit {
     })
     this.form.addControl('active', new FormControl<boolean>(category.active, [Validators.required]));
 
-    console.log(this.form.get('active')?.value)
     if (category.maximumBudgetInvestment) {
       this.changeBoundaryTo(FINANCIAL_BOUNDARIES.PERCENTAGE_OVER_DEPOSIT);
       this.form.patchValue({

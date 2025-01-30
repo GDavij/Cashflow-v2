@@ -1,4 +1,7 @@
 <div class="w-screen rounded-sm flex flex-col items-center gap-6">
+  <div class="w-full rounded-sm flex flex-grow-0 px-6 py-4 mb-2 sm:w-3/4">
+    <app-button routerLink="/">Return</app-button>
+  </div>
 
   <section class="flex flex-col bg-white-0 w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
     <section class="flex justify-between items-end flex-wrap gap-4">
@@ -54,7 +57,25 @@
       </div>
       }
       @else if (!isLoadingCurrentCategory && currentCategory) {
-      Category Loaded
+        <div class="flex flex-wrap min-h-72 py-4 gap-2">
+
+          @if (hasContraint) {
+
+            <div class="flex-1 bg-white-0 shadow-sm border-white-50 border rounded-md flex flex-col p-2 items-center">
+              <h4 class="text-lg text-primary text-nowrap">{{ constraintTitle }}</h4>
+              
+              <span class="flex h-full w-full justify-center items-center text-xl text-white-700 text-nowrap">{{ constraint }}</span>
+            </div>
+          }
+
+          <div class="flex-1 bg-white-0 shadow-sm border-white-50 border rounded-md flex flex-col p-2 items-center">
+              <h4 class="text-lg text-primary text-nowrap"> Total Transactions Registered </h4>
+
+
+              <span class="flex h-full w-full justify-center items-center text-xl text-white-700 text-nowrap">{{ currentCategory.totalTransactionsRegistered }}</span>
+          </div>
+
+        </div>
       } @else {
       <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
         <span class="text-gray-500">No Category Selected</span>

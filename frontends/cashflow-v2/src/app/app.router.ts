@@ -1,12 +1,11 @@
 import { Routes } from "@angular/router";
-import { featuresRoutes } from "./features/features.routing";
-import { AppComponent } from "./app.component";
 import { AdministrativeComponent } from "./layout/administrative/administrative.component";
+import { dashboardRoutes } from "./features/dashboard/dashboard.routing";
 
 export const appRoutes: Routes = [
   {
     path: '',
     component: AdministrativeComponent,
-    children: featuresRoutes,
+    children: dashboardRoutes,
   }
 ]

@@ -20,13 +20,7 @@ public class BankAccount : OwnableEntity<BankAccount>
         CurrentValue = 0.0M;
     }
 
-    public BankAccount(short accountTypeId, string name, decimal currentValue)
-        : base()
-    {
-        AccountTypeId = accountTypeId;
-        Name = name;
-        CurrentValue = currentValue;
-    }
+
 
     public void RenameTo(string name)
     {

@@ -1,0 +1,45 @@
+<div class="w-screen flex flex-col items-center gap-6">
+
+
+<section class="flex flex-col bg-white-0 w-full sm:w-3/4 min-h-12 px-6 py-4 motion-preset-slide-down-lg flex-wrap">
+    <section class="flex justify-between items-end flex-wrap gap-4">
+      <div class="w-fit flex flex-col gap-2">
+        <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">Dashboard</h1>
+        <div class="w-full motion-preset-slide-right-lg h-1 bg-primary-active motion-duration-700 motion-delay-200"></div>
+        <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200"> Know what you can do </h3>
+      </div>
+
+      <div class="flex gap-2 sm:flex-row flex-col items-end w-full">
+        <div class="flex w-full flex-wrap min-h-52 justify-center gap-6">
+            @for (feature of features; track feature) {
+                <div class="flex-1 max-w-96 gap-4 px-2 py-4 flex border border-white-50 shadow-sm flex-col">
+                    <div class="flex-1 flex flex-col items-center justify-center">
+                        <div class="text-4xl text-white-800">{{feature.name}}</div>
+                        <div class="text-xl text-white-700">{{feature.description}}</div>
+                    </div>
+                    <div class="flex-0 flex justify-center items-center px-4 py-2">
+                        <app-button class="w-full" routerLink="{{feature.route}}">{{feature.callToAction}}</app-button>
+                    </div>
+                </div>
+            }
+          
+
+          
+
+        </div>
+        
+
+        
+
+      </div>
+    </section>
+
+    <section>
+        <div class="flex flex-wrap min-h-72 py-4 gap-2">
+
+        </div>
+    
+    </section>
+  </section>
+
+  </div>

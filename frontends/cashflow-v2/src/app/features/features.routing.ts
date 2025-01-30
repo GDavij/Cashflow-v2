@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
-import { financialBoundariesRoutes } from "./financial-boundaries/financial-boundaries.routing";
+import { dashboardRoutes } from "./dashboard/dashboard.routing";
 
 export const featuresRoutes: Routes = [
-  ...financialBoundariesRoutes
+  ...dashboardRoutes
 ];

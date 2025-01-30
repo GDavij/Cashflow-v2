@@ -45,7 +45,9 @@ public class CreateBankAccountHandler
         BankAccount bankAccount;
         if (request.InitialValue is not null)
         {
-            bankAccount = new BankAccount(request.AccountType, request.Name, request.InitialValue.Value);
+            bankAccount = new BankAccount(request.AccountType, request.Name);
+            
+            // Update to create a transaction into bank account
         }
         else
         {
