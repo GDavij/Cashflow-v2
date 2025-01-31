@@ -17,4 +17,8 @@
       <ProjectReference Include="..\Cashflow.Core\Cashflow.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\FinancialDistribution\ListAccountTypes\" />
+    </ItemGroup>
+
 </Project>

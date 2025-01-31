@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../../../components/button/button.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BankAccount } from '../../../../../models/financial-distribution/bank-account';
+import { SelectComponent } from "../../../../../components/select/select.component";
+import { SelectContainerComponent } from "../../../../../components/select/select-container/select-container.component";
+import { SelectOptionComponent } from "../../../../../components/select/select-option/select-option.component";
+import { Option } from '../../../../../components/select/select.models';
+import { FormFieldComponent } from "../../../../../components/form-field/form-field.component";
 
 @Component({
   selector: 'app-edit',
@@ -18,6 +23,17 @@ export class EditComponent implements OnInit {
   isSavingBankAccount: boolean = false;
 
   form!: FormGroup;
+
+  options: Option<any>[] = [
+    {
+      label: 'Conta Corrente',
+      value: 'current'
+    },
+    {
+      label: 'Conta Poupança',
+      value: 'savings'
+    }
+  ]
 
   constructor(private readonly _activatedRoute: ActivatedRoute, private readonly _fb: FormBuilder) {}
 
@@ -51,7 +67,9 @@ export class EditComponent implements OnInit {
   }
 
   private createForm() {
-    this.form = this._fb.group({});
+    this.form = this._fb.group({
+      accountType: [this.options[0].value, [Validators.required]]
+    });
   }
 
 }

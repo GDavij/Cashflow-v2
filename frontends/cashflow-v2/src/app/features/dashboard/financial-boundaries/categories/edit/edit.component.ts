@@ -111,21 +111,15 @@ export class EditComponent implements OnInit {
   }
 
   activate() {
-    console.log("Active category")
     this.form.patchValue({
       active: true
     })
-
-    console.log(this.form.value);
   }
 
   deactivate() {
-    console.log("Deactivate category")
     this.form.patchValue({
       active: false
     })
-
-    console.log(this.form.value);
   }
 
   handleSubmit() {

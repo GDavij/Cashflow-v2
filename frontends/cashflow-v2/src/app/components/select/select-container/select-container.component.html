@@ -1,0 +1,7 @@
+<section #container [class]="mergeClasses('w-full bg-white-0 shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-white-50 motion-preset-slide-down-md p-2', className)" (blur)="onBlur()" cdkMenu>
+    <ng-content/>
+    
+    @if (isEmpty) {
+        <span>{{ notFoundText }}</span>
+    }
+</section>

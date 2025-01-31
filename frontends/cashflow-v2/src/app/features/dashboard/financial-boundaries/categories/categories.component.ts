@@ -10,10 +10,15 @@ import { ButtonComponent } from "../../../../components/button/button.component"
 import { DateHelper } from '../../../../helpers/date.helper';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { matArrowBackIosRound, matArrowForwardIosRound } from '@ng-icons/material-icons/round';
+import { FormFieldComponent } from "../../../../components/form-field/form-field.component";
+import { SelectComponent } from "../../../../components/select/select.component";
+import { SelectContainerComponent } from "../../../../components/select/select-container/select-container.component";
+import { SelectOptionComponent } from '../../../../components/select/select-option/select-option.component';
+import { Option } from '../../../../components/select/select.models';
 
 @Component({
   selector: 'app-categories',
-  imports: [CdkMenuModule, CommonModule, RouterLink, ButtonComponent, NgIcon],
+  imports: [CdkMenuModule, CommonModule, RouterLink, ButtonComponent, FormFieldComponent, SelectComponent, SelectContainerComponent, SelectOptionComponent],
   viewProviders: [provideIcons({ matArrowBackIosRound, matArrowForwardIosRound })],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
@@ -21,6 +26,7 @@ import { matArrowBackIosRound, matArrowForwardIosRound } from '@ng-icons/materia
 export class CategoriesComponent implements OnInit {
   currentDate = new DateHelper();
 
+  categoriesOptions: Option<CategoryListItem>[] = [];
   categories: CategoryListItem[] = [];
 
   isLoadingCurrentCategory: boolean = false;
@@ -44,9 +50,14 @@ export class CategoriesComponent implements OnInit {
       this.categories = categories;
 
       if (this.categories.length > 0) {
+        this.categoriesOptions = this.categories.map(category => ({ label: category.name, value: category }));
         this.viewCategory(this.categories[0]);
       }
     })
+  }
+
+  view(data: any) {
+    console.log({data})
   }
 
   viewCategory(selectCatgory: CategoryListItem) {
@@ -67,7 +78,6 @@ export class CategoriesComponent implements OnInit {
   editCurrentCategory() {
     this._router.navigate(['/categories', 'edit', this.currentCategory!.id]);
   }
-
 
   get hasContraint() {
     return this.currentCategory?.maximumBudgetInvestment || this.currentCategory?.maximumMoneyInvestment;
