@@ -1,6 +1,7 @@
 ﻿using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.GetBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.ListAccountTypes;
 using Cashflow.Domain.Features.FinancialDistribution.ListBankAccounts;
 using Cashflow.Domain.Features.FinancialDistribution.UpdateBankAccount;
 using FluentValidation.Results;
@@ -71,5 +72,12 @@ public class BankAccountsController : ControllerBase
         }
 
         return BadRequest(validationResult.Errors);
+    }
+
+    [HttpGet("types")]
+    [ProducesResponseType(typeof(ListAccountTypesHandler.Response), 200)]
+    public async Task<IActionResult> GetAllAccountTypes([FromServices] ListAccountTypesHandler handler, CancellationToken cancellationToken)
+    {
+        return Ok(await handler.HandleAsync(cancellationToken));
     }
 }

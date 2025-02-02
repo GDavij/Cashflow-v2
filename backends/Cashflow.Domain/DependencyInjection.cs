@@ -2,6 +2,7 @@
 using Cashflow.Domain.Features.FinancialDistribution.CreateBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.DeleteBankAccount;
 using Cashflow.Domain.Features.FinancialDistribution.GetBankAccount;
+using Cashflow.Domain.Features.FinancialDistribution.ListAccountTypes;
 using Cashflow.Domain.Features.FinancialDistribution.ListBankAccounts;
 using Cashflow.Domain.Features.FinancialDistribution.UpdateBankAccount;
 using FluentValidation;
@@ -24,6 +25,8 @@ public static class DependencyInjection
         services.AddScoped<DeleteBankAccountHandler>();
         services.AddScoped<ListBankAccountsHandler>();
         services.AddScoped<GetBankAccountHandler>();
+
+        services.AddScoped<ListAccountTypesHandler>();
 
         return services;
     }
