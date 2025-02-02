@@ -6,15 +6,16 @@ import { FINANCIAL_BOUNDARIES } from '../../../../../enums/FINANCIAL_BOUNDARIES'
 import { CommonModule, NgIf } from '@angular/common';
 import { catchError, of, retry, tap } from 'rxjs';
 import { ButtonComponent } from "../../../../../components/button/button.component";
-import { FinancialBoundariesService } from '../../../../financial-boundaries.service';
+import { FinancialBoundariesService } from '../../../../../services/financial-boundaries.service';
 import { Category, SaveCategoryPayload } from '../../../../../models/financial-boundaries/category';
 import { CacheService } from '../../../../../services/cache.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { DeleteComponent } from '../../../../../components/dialogs/delete/delete.component';
+import { DividerComponent } from '../../../../../components/divider/divider.component';
 
 @Component({
   selector: 'app-edit',
-  imports: [FormsModule, ReactiveFormsModule, CdkMenuModule, CommonModule, ButtonComponent, RouterModule],
+  imports: [FormsModule, ReactiveFormsModule, CdkMenuModule, CommonModule, ButtonComponent, RouterModule, DividerComponent],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
 })

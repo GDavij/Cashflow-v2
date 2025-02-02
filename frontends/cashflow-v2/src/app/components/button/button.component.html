@@ -1,12 +1,10 @@
 <button [disabled]="disabled"
-  [class]="mergeClasses('text-nowrap h-10 w-full bg-primary hover:bg-primary-hover cursor-pointer flex justify-center active:bg-primary-active duration-100 transition-all disabled:bg-white-300 disabled:active:bg-white-700 disabled:cursor-not-allowed active:motion-scale-in-[1.03]  text-white-0 px-4 py-2 rounded-md font-semibold', className)">
-  @if (loading) {
-  <div
-    class="size-6 border-2 border-t-2 border-white-200 rounded-full animate-spin border-t-primary motion-preset-fade motion-duration-1000">
-  </div>
-  } @else {
+  [class]="mergeClasses('text-nowrap h-10 w-full bg-primary hover:bg-primary-hover cursor-pointer flex justify-center active:bg-primary-active duration-100 transition-all disabled:bg-white-300 disabled:active:bg-white-700 disabled:cursor-not-allowed active:motion-scale-in-[1.03]  text-white-0 px-4 py-2 rounded-md font-semibold items-center', className)">
+  
   <div>
+    <app-loader [isLoading]="loading" className="h-10" innerLoaderClassName="w-6 h-6" />
+    @if (!loading) {
     <ng-content />
+    }
   </div>
-  }
 </button>

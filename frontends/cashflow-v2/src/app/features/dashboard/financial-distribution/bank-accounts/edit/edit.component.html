@@ -1,4 +1,4 @@
-<div class="w-screen rounded-sm flex flex-col items-center gap-6">
+<div class="w-screen rounded-sm flex flex-col items-center gap-6 mb-6">
   <div class="w-full rounded-sm flex flex-grow-0 px-6 py-4 mb-2 sm:w-3/4">
     <app-button routerLink="/bank-accounts">Return</app-button>
   </div>
@@ -8,8 +8,8 @@
       <div class="w-fit flex flex-col gap-2">
         <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">{{id ? "Edit" : "Create"}}
           Bank Account</h1>
-        <div class="w-full motion-preset-slide-right-lg h-1 bg-primary-active motion-duration-700 motion-delay-200"></div>
-        <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">
+        <app-divider className="motion-preset-slide-right-lg motion-duration-700 motion-delay-200"/>
+          <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">
           {{id ? "Refine a " : "Define a new "}} Distribution
         </h3>
       </div>

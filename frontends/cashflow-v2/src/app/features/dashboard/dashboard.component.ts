@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../components/button/button.component';
 import { RouterLink } from '@angular/router';
+import { DividerComponent } from "../../components/divider/divider.component";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ButtonComponent, RouterLink],
+  imports: [ButtonComponent, RouterLink, DividerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

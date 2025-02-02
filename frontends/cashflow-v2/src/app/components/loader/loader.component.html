@@ -1,0 +1,5 @@
+@if (isLoading) {
+    <div [class]="mergeClasses('w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-200 motion-preset-pop', className)">
+        <div [class]="mergeClasses('w-12 h-12 border-4 border-white-200 border-t-primary-active rounded-full animate-spin', innerLoaderClassName)"></div>
+    </div>
+}

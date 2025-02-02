@@ -1,4 +1,4 @@
-<div class="w-screen rounded-sm flex flex-col items-center gap-6">
+<div class="w-screen rounded-sm flex flex-col items-center gap-6 mb-6">
   <div class="w-full rounded-sm flex flex-grow-0 px-6 py-4 mb-2 sm:w-3/4">
     <app-button routerLink="/categories">Return</app-button>
   </div>
@@ -7,19 +7,20 @@
     <section class="flex justify-between items-end flex-wrap gap-4">
       <div class="w-fit flex flex-col gap-2">
         <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">{{id ? "Edit" : "Create"}}
-          Category</h1>
-        <div class="w-full motion-preset-slide-right-lg h-1 bg-primary-active motion-duration-700 motion-delay-200"></div>
+          Category
+        </h1>
+        <app-divider className="motion-preset-slide-right-lg motion-duration-700 motion-delay-200"/>
         <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">
           {{id ? "Stay Alert" : "Keep Alert"}} About your boundaries
         </h3>
       </div>
 
       <section class="flex flex-wrap-reverse justify-end items-end gap-2">
-        <app-button *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" (click)="resetForm()">
+        <app-button className="w-full" *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" (click)="resetForm()">
           Reset values
         </app-button>
 
-        <app-button [disabled]="form.invalid || isSavingCategory || isDeletingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
+        <app-button className="w-full" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
           {{ id ? "Alter Category" : "Save Category" }}
         </app-button>
       </section>

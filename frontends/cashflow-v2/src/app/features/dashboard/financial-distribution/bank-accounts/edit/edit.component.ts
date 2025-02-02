@@ -8,10 +8,11 @@ import { SelectContainerComponent } from "../../../../../components/select/selec
 import { SelectOptionComponent } from "../../../../../components/select/select-option/select-option.component";
 import { Option } from '../../../../../components/select/select.models';
 import { FormFieldComponent } from "../../../../../components/form-field/form-field.component";
+import { DividerComponent } from '../../../../../components/divider/divider.component';
 
 @Component({
   selector: 'app-edit',
-  imports: [ButtonComponent, RouterLink, FormsModule, ReactiveFormsModule],
+  imports: [ButtonComponent, RouterLink, FormsModule, ReactiveFormsModule, DividerComponent],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
 })

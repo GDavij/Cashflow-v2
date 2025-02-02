@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FinancialBoundariesService } from '../../../financial-boundaries.service';
+import { FinancialBoundariesService } from '../../../../services/financial-boundaries.service';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { Category, CategoryListItem, CategoryTransactionsAggregate } from '../../../../models/financial-boundaries/category';
-import { catchError, of, retry } from 'rxjs';
+import { catchError, EMPTY, of, retry } from 'rxjs';
 import { CommonModule, CurrencyPipe} from '@angular/common';
 import { CacheService } from '../../../../services/cache.service';
 import { Router, RouterLink } from '@angular/router';
@@ -15,10 +15,13 @@ import { SelectComponent } from "../../../../components/select/select.component"
 import { SelectContainerComponent } from "../../../../components/select/select-container/select-container.component";
 import { SelectOptionComponent } from '../../../../components/select/select-option/select-option.component';
 import { Option } from '../../../../components/select/select.models';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoaderComponent } from "../../../../components/loader/loader.component";
+import { DividerComponent } from "../../../../components/divider/divider.component";
 
 @Component({
   selector: 'app-categories',
-  imports: [CdkMenuModule, CommonModule, RouterLink, ButtonComponent, FormFieldComponent, SelectComponent, SelectContainerComponent, SelectOptionComponent],
+  imports: [CdkMenuModule, CommonModule, RouterLink, ButtonComponent, FormFieldComponent, SelectComponent, SelectContainerComponent, SelectOptionComponent, FormsModule, ReactiveFormsModule, LoaderComponent, DividerComponent],
   viewProviders: [provideIcons({ matArrowBackIosRound, matArrowForwardIosRound })],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
@@ -26,7 +29,8 @@ import { Option } from '../../../../components/select/select.models';
 export class CategoriesComponent implements OnInit {
   currentDate = new DateHelper();
 
-  categoriesOptions: Option<CategoryListItem>[] = [];
+  categoriesOptions: Option<number>[] = [];
+  selectedOption = new FormControl<number>(0);
   categories: CategoryListItem[] = [];
 
   isLoadingCurrentCategory: boolean = false;
@@ -37,6 +41,10 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.selectedOption.valueChanges.subscribe(v => {
+      const selectedCategory = this.categories.find(c => c.id === v);
+      this.viewCategory(selectedCategory!);
+    })
   }
 
   loadCategories() {
@@ -50,27 +58,27 @@ export class CategoriesComponent implements OnInit {
       this.categories = categories;
 
       if (this.categories.length > 0) {
-        this.categoriesOptions = this.categories.map(category => ({ label: category.name, value: category }));
+        this.categoriesOptions = this.categories.map(category => ({ label: category.name, value: category.id }));
+        this.selectedOption.setValue(this.categoriesOptions[0].value);
         this.viewCategory(this.categories[0]);
       }
     })
   }
 
-  view(data: any) {
-    console.log({data})
-  }
-
   viewCategory(selectCatgory: CategoryListItem) {
     this.isLoadingCurrentCategory = true;
     const { subject } = this._cacheService.getOrResolveTo(() => this._financialBoundariesService.getCategory(selectCatgory).pipe(retry(3), catchError(err => {
-      console.error([err]);
+      console.error({err});
       this.isLoadingCurrentCategory = false;
-      return of(null);
+      return EMPTY;
     })), `category-${selectCatgory.id}`);
 
     subject.subscribe(result => {
       this.currentCategory = result;
-      this.isLoadingCurrentCategory = false;
+
+      setTimeout(() => {
+        this.isLoadingCurrentCategory = false;
+      }, 200)
     })
   }
 

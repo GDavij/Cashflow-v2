@@ -8,7 +8,11 @@ export const financialDistributionRoutes: Routes = [
         component: BankAccountsComponent
     },
     {
-        path: 'bank-accounts/edit',
+        path: 'bank-accounts/create',
+        component: EditComponent
+    },
+    {
+        path: 'bank-accounts/edit/:id',
         component: EditComponent
     }
 ]

@@ -1,4 +1,4 @@
-<div class="w-screen rounded-sm flex flex-col items-center gap-6">
+<div class="w-screen rounded-sm flex flex-col items-center gap-6 mb-6">
   <div class="w-full rounded-sm flex flex-grow-0 px-6 py-4 mb-2 sm:w-3/4">
     <app-button routerLink="/">Return</app-button>
   </div>
@@ -7,7 +7,7 @@
     <section class="flex justify-between items-end flex-wrap gap-4">
       <div class="w-fit flex flex-col gap-2">
         <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">Categories</h1>
-        <div class="w-full motion-preset-slide-right-lg h-1 bg-primary-active motion-duration-700 motion-delay-200"></div>
+        <app-divider className="motion-preset-slide-right-lg motion-duration-700 motion-delay-200"/>
         <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">Manage you finance boundaries
         </h3>
       </div>
@@ -16,7 +16,7 @@
         <div class="flex flex-col motion-preset-slide-right-lg motion-delay-200 w-full">
           
           <app-form-field label="Categories">
-            <app-select [options]="categoriesOptions">
+            <app-select [options]="categoriesOptions" [formControl]="selectedOption">
               <app-select-container>
                 @for (category of categoriesOptions; track category.value) {
                   <app-select-option [option]="category">{{ category.label }}</app-select-option>
@@ -28,7 +28,7 @@
         </div>
         <app-button class="w-full" (click)="editCurrentCategory()" *ngIf="currentCategory">Edit Category</app-button>
 
-        <app-button class="w-full" routerLink="edit">
+        <app-button class="w-full" routerLink="create">
           Create Category
         </app-button>
 
@@ -36,13 +36,10 @@
     </section>
 
     <section>
-      @if (isLoadingCurrentCategory) {
-      <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
-        <div class="w-12 h-12 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500"></div>
-      </div>
-      }
-      @else if (!isLoadingCurrentCategory && currentCategory) {
-        <div class="flex flex-wrap min-h-72 py-4 gap-2">
+        <app-loader [isLoading]="isLoadingCurrentCategory"/>
+       
+        @if (!isLoadingCurrentCategory && currentCategory) {
+        <div class="flex flex-wrap min-h-72 py-4 gap-2 motion-preset-fade-md motion-duration-500">
 
           @if (hasContraint) {
 
@@ -61,7 +58,7 @@
           </div>
 
         </div>
-      } @else {
+      } @else if (!isLoadingCurrentCategory) {
       <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
         <span class="text-gray-500">No Category Selected</span>
       </div>

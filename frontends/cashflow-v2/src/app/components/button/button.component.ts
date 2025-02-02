@@ -1,9 +1,10 @@
 import { twMerge} from 'tailwind-merge';
 import { Component, Input } from '@angular/core';
+import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-button',
-  imports: [],
+  imports: [LoaderComponent],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss'
 })

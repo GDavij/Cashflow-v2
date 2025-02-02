@@ -28,8 +28,7 @@ import { Subscription } from 'rxjs';
 })
 export class SelectContainerComponent implements AfterViewInit {
   @ViewChild('container') element!: ElementRef;
-  @ContentChildren(SelectOptionComponent, { descendants: true })
-  options!: QueryList<SelectOptionComponent>;
+  @ContentChildren(SelectOptionComponent, { descendants: true }) options!: QueryList<SelectOptionComponent>;
 
   readonly mergeClasses = twMerge;
 
@@ -46,23 +45,25 @@ export class SelectContainerComponent implements AfterViewInit {
   constructor(private readonly _changeDetectorRef: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
-    this.configureOptions();
-    this.onOptionsChangeEvent.subscribe(this.configureOptions);
+    this.options.changes.subscribe(() => this.configureOptions());
+    this.onOptionsChangeEvent.subscribe(() => this.LookupForOptions())
   }
 
   configureOptions() {
+    this._changeDetectorRef.detectChanges();
     while (this.optionsSubscriptions?.length) {
       this.optionsSubscriptions.pop()!.unsubscribe();
     }
 
-    this.options?.forEach((option) => {
-      console.log(option);
-      this.optionsSubscriptions.push(
-        option.onSelectEvent.subscribe((opt) => {
-          this.onSelectionEvent.emit(opt);
-        }),
-      );
-    });
+    this.options.forEach(opt => {
+      this.optionsSubscriptions.push(opt.onSelectEvent.subscribe(opt => {
+        this.onSelectionEvent.emit(opt);
+      }))
+    })
+  }
+
+  LookupForOptions() {
+    this._changeDetectorRef.detectChanges();
   }
 
   get isEmpty() {

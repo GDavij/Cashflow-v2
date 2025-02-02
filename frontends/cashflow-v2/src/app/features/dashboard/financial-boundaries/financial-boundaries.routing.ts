@@ -8,7 +8,7 @@ export const financialBoundariesRoutes: Routes = [
     component: CategoriesComponent
   },
   {
-    path: 'categories/edit',
+    path: 'categories/create',
     component: EditComponent
   },
   {

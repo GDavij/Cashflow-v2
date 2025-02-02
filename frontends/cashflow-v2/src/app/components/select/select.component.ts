@@ -38,7 +38,6 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnC
   ngAfterViewInit(): void {
     this.selectContainer.forEach(container => {
       container.onSelectionEvent.subscribe(option => {
-        console.log(option)
         this.writeValue(option.value);
         this.onChange(option.value);
         this.menu.close();
@@ -52,7 +51,6 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log({ changes })
     if (this.selectContainer?.first) {
       this.selectContainer.first.onOptionsChangeEvent.emit();
     }
@@ -60,7 +58,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit, OnC
 
 
   get optionName() {
-    return this.options.find(opt => opt.value == this.value)?.label || this.notFoundText || "Selecione uma opção";
+    return this.options.find(opt => opt.value == this.value)?.label || this.notFoundText || "Select one option";
   }
 
   writeValue(value: any): void {

@@ -14,12 +14,14 @@ export class CacheService {
     const subject = new Subject<T>;
 
     if (this.cacheMap.has(key)) {
+      console.log('Cache hit for key:', key)
       setTimeout(() => subject.next(this.cacheMap.get(key)), 100)
       return { subject, cancelSubscription: () => { } }
     }
 
     const subscription = resolve().subscribe(result => {
       this.cacheMap.set(key, result);
+      console.log("Cache miss for key:", key)
       subject.next(result);
     });
 
