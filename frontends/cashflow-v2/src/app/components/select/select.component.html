@@ -1,4 +1,5 @@
 <button [cdkMenuTriggerFor]="menu"
+        (cdkMenuOpened)="onOpenContainer()"
         class="w-full border-2 rounded-md border-white-300 focus:border-primary-active shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">
         {{ optionName }}
     </button>

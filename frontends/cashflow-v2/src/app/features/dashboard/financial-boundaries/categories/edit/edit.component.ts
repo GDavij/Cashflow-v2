@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { CdkMenuModule } from '@angular/cdk/menu';
@@ -12,22 +12,41 @@ import { CacheService } from '../../../../../services/cache.service';
 import { Dialog } from '@angular/cdk/dialog';
 import { DeleteComponent } from '../../../../../components/dialogs/delete/delete.component';
 import { DividerComponent } from '../../../../../components/divider/divider.component';
+import { InputComponent } from '../../../../../components/input/input.component';
+import { FormFieldComponent } from "../../../../../components/form-field/form-field.component";
+import { SelectComponent } from "../../../../../components/select/select.component";
+import { SelectContainerComponent } from "../../../../../components/select/select-container/select-container.component";
+import { Option } from '../../../../../components/select/select.models';
+import { FINANCIAL_BOUNDARIES_OPTIONS } from '../../../../../constants/FINANCIAL_BOUNDARIES';
+import { SelectOptionComponent } from '../../../../../components/select/select-option/select-option.component';
+import { LoaderComponent } from "../../../../../components/loader/loader.component";
 
 @Component({
   selector: 'app-edit',
-  imports: [FormsModule, ReactiveFormsModule, CdkMenuModule, CommonModule, ButtonComponent, RouterModule, DividerComponent],
+  imports: [FormsModule, ReactiveFormsModule, CdkMenuModule, CommonModule, ButtonComponent, RouterModule, DividerComponent, InputComponent, FormFieldComponent, SelectComponent, SelectContainerComponent, SelectOptionComponent, LoaderComponent],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
 })
 export class EditComponent implements OnInit {
-  readonly financialBoundaries: FINANCIAL_BOUNDARIES[] = [FINANCIAL_BOUNDARIES.NONE, FINANCIAL_BOUNDARIES.MONEY, FINANCIAL_BOUNDARIES.PERCENTAGE_OVER_DEPOSIT];
+  readonly financialBoundaries: Option<FINANCIAL_BOUNDARIES>[] = FINANCIAL_BOUNDARIES_OPTIONS;
+  readonly activeOptions: Option<boolean>[] = [
+    {
+      label: "Active",
+      value: true
+    },
+    {
+      label: "Deactivate",
+      value: false
+    }
+  ]
+
   fetchedCategory: Category | null = null;
   
   isLoadingCurrentCategory: boolean = false;
   isSavingCategory: boolean = false;
   isDeletingCategory: boolean = false;
 
-  hasBoundary: FINANCIAL_BOUNDARIES = FINANCIAL_BOUNDARIES.NONE;
+  hasBoundary = new FormControl(FINANCIAL_BOUNDARIES.NONE);
   form!: FormGroup;
 
   constructor(
@@ -44,10 +63,14 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.hasBoundary.valueChanges.subscribe(value => {
+      this.changeBoundaryTo(value!);
+    })
 
     if (this.id) {
       this.loadCategory();
     }
+    
   }
 
   createForm() {
@@ -63,7 +86,7 @@ export class EditComponent implements OnInit {
       this.loadExistingCategoryToForm(this.fetchedCategory!)
       return
     }
-
+    
     this.createForm()
     return
   }
@@ -103,24 +126,15 @@ export class EditComponent implements OnInit {
 
       default:
         this.form.removeControl('maximumBudgetInvestment');
-        this.form.removeControl('maximumMoneyInvestment');
-
+        this.form.removeControl('maximumMoneyInvestment');      
     }
 
-    this.hasBoundary = boundaryValue;
+    if (this.hasBoundary.value !== boundaryValue) {
+      console.log({boundaryValue})
+      this.hasBoundary.setValue(boundaryValue);
+    }
+
     this.form.updateValueAndValidity();
-  }
-
-  activate() {
-    this.form.patchValue({
-      active: true
-    })
-  }
-
-  deactivate() {
-    this.form.patchValue({
-      active: false
-    })
   }
 
   handleSubmit() {

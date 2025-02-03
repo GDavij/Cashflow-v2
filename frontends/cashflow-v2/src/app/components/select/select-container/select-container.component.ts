@@ -35,7 +35,7 @@ export class SelectContainerComponent implements AfterViewInit {
   readonly onSelectionEvent = new EventEmitter<Option<any>>();
 
   readonly onBlurEvent = new EventEmitter<void>();
-  readonly onOptionsChangeEvent = new EventEmitter<void>();
+  readonly onOptionsChangeEvent = new EventEmitter<boolean>();
 
   readonly optionsSubscriptions: Subscription[] = [];
 
@@ -45,11 +45,13 @@ export class SelectContainerComponent implements AfterViewInit {
   constructor(private readonly _changeDetectorRef: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
+    console.log({options: {...this.options}})
     this.options.changes.subscribe(() => this.configureOptions());
-    this.onOptionsChangeEvent.subscribe(() => this.LookupForOptions())
+    this.onOptionsChangeEvent.subscribe((isStaticOptions: boolean) => this.LookupForOptions(isStaticOptions))
   }
 
   configureOptions() {
+    console.log("CONFIGURING OPTIONS")
     this._changeDetectorRef.detectChanges();
     while (this.optionsSubscriptions?.length) {
       this.optionsSubscriptions.pop()!.unsubscribe();
@@ -62,7 +64,12 @@ export class SelectContainerComponent implements AfterViewInit {
     })
   }
 
-  LookupForOptions() {
+  // IMPROVE: HANDLE STATIC OPTIONS DETECTION AND EVENT BINDING. 
+  LookupForOptions(isStaticOptions: boolean) {
+    if (isStaticOptions) {
+      this.configureOptions();
+    }
+
     this._changeDetectorRef.detectChanges();
   }
 

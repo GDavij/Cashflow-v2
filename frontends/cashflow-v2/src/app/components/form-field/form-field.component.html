@@ -1,5 +1,9 @@
-<label>
-    <span [class]="mergeClasses('text-md text-white-800 font-semibold', className)">{{ label }}</span>
+<label class="flex-1">
+    <span [class]="mergeClasses('text-md text-white-800 font-semibold', className)">
+        @if (required) {
+            <span class="text-required">*</span>
+        }
+         {{ label }}</span>
     <ng-content/>
 </label>
 <!-- TODO: Add div for error feedback and [form] directive foward -->

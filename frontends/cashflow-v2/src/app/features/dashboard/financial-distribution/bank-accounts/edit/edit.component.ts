@@ -3,11 +3,7 @@ import { ButtonComponent } from '../../../../../components/button/button.compone
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BankAccount } from '../../../../../models/financial-distribution/bank-account';
-import { SelectComponent } from "../../../../../components/select/select.component";
-import { SelectContainerComponent } from "../../../../../components/select/select-container/select-container.component";
-import { SelectOptionComponent } from "../../../../../components/select/select-option/select-option.component";
 import { Option } from '../../../../../components/select/select.models';
-import { FormFieldComponent } from "../../../../../components/form-field/form-field.component";
 import { DividerComponent } from '../../../../../components/divider/divider.component';
 
 @Component({

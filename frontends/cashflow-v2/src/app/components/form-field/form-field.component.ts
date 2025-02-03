@@ -11,5 +11,8 @@ export class FormFieldComponent {
   readonly mergeClasses = twMerge;
 
   @Input() className: string = '';
+
+  //TODO: REFACTOR TO USE "REFLECTION" via query list of <app-input> components
+  @Input() required: boolean = false;
   @Input({ required: true }) label: string = '';
 }

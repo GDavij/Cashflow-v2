@@ -9,18 +9,20 @@
         <h1 class="text-3xl text-white-800 motion-preset-slide-left-lg motion-delay-200">{{id ? "Edit" : "Create"}}
           Category
         </h1>
-        <app-divider className="motion-preset-slide-right-lg motion-duration-700 motion-delay-200"/>
+        <app-divider className="motion-preset-slide-right-lg motion-duration-700 motion-delay-200" />
         <h3 class="text-xl text-white-700 motion-preset-slide-left-lg motion-delay-200">
           {{id ? "Stay Alert" : "Keep Alert"}} About your boundaries
         </h3>
       </div>
 
       <section class="flex flex-wrap-reverse justify-end items-end gap-2">
-        <app-button className="w-full" *ngIf="fetchedCategory" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" (click)="resetForm()">
+        <app-button className="w-full" *ngIf="fetchedCategory"
+          [disabled]="form.invalid || isSavingCategory || isDeletingCategory" (click)="resetForm()">
           Reset values
         </app-button>
 
-        <app-button className="w-full" [disabled]="form.invalid || isSavingCategory || isDeletingCategory" [loading]="isSavingCategory" (click)="handleSubmit()">
+        <app-button className="w-full" [disabled]="form.invalid || isSavingCategory || isDeletingCategory"
+          [loading]="isSavingCategory" (click)="handleSubmit()">
           {{ id ? "Alter Category" : "Save Category" }}
         </app-button>
       </section>
@@ -28,19 +30,13 @@
     </section>
 
     <section>
-      @if (id && isLoadingCurrentCategory) {
-      <div class="w-full h-96 flex justify-center items-center motion-preset-fade motion-duration-1000">
-        <div class="w-12 h-12 border-4 border-t-4 border-white-400 rounded-full animate-spin border-t-primary"></div>
-      </div>
-      }
-      @else {
+      <app-loader [isLoading]="isLoadingCurrentCategory" />
+      @if (id && !isLoadingCurrentCategory) {
       <section class=" w-full  h-96 motion-preset-fade motion-duration-1000 mt-24">
 
         <form class="flex flex-col gap-4" [formGroup]="form" (submit)="handleSubmit()">
-          <label class="basis-full flex flex-col">
-            <span class="text-white-800"><span class="text-required">*</span> Name</span>
-            <input placeholder="Eating..." formControlName="name"
-              class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+          <app-form-field label="Name" [required]="true">
+            <app-input placeholder="Eating..." formControlName="name" />
             <div class="flex flex-col gap-2">
               <span class="text-error motion-preset-slide-down-md motion-duration-1000"
                 *ngIf="form.get('name')!.touched && form.get('name')!.hasError('required')">
@@ -54,22 +50,26 @@
                 *ngIf="form.get('name')!.touched && form.get('name')!.hasError('maxlength')">
                 Name must have a max of 60 characters</span>
             </div>
-          </label>
+          </app-form-field>
 
           <div class="flex gap-4 md:flex-row flex-col">
             <div class="md:basis-1/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span class="text-white-800"><span class="text-required">*</span> Has Boundary</span>
-              <button [cdkMenuTriggerFor]="menu"
-                class="w-full border-2 rounded-md border-white-300 focus:border-primary-active shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{
-                hasBoundary }}</button>
+              <app-form-field label="Has Boundary" [required]="true">
+                <app-select [options]="financialBoundaries" [isStaticOptions]="true" [formControl]="hasBoundary">
+                  <app-select-container>
+                    @for (boundary of financialBoundaries; track boundary.value) {
+                    <app-select-option [option]="boundary">{{ boundary.label }}</app-select-option>
+                    }
+                  </app-select-container>
+                </app-select>
+              </app-form-field>
             </div>
 
-            @if (hasBoundary == financialBoundaries[1]) {
+            @if (hasBoundary.value == financialBoundaries[1].value) {
 
-            <label class="md:basis-3/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span class="text-white-800"><span class="text-required">*</span> Money Limit (R$)</span>
-              <input placeholder="500" formControlName="maximumMoneyInvestment" type="number"
-                class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+            <app-form-field label="Money Limit (BRL)" [required]="true"
+              className="md:basis-3/4 basis-full flex motion-preset-fade-lg motion-delay-200">
+              <app-input placeholder="500" formControlName="maximumMoneyInvestment" type="number" />
 
               <div class="flex flex-col gap-2">
                 <span class="text-error motion-preset-slide-down-md motion-duration-1000"
@@ -81,13 +81,12 @@
                   Money Limit must be R$0 or greater</span>
 
               </div>
-            </label>
-            } @else if (hasBoundary == financialBoundaries[2]) {
+            </app-form-field>
+            } @else if (hasBoundary.value == financialBoundaries[2].value) {
 
-            <label class="md:basis-3/4 basis-full flex flex-col motion-preset-fade-lg motion-delay-200">
-              <span class="text-white-800"><span class="text-required">*</span> Percentage to consider (%) </span>
-              <input placeholder="10" formControlName="maximumBudgetInvestment" type="number"
-                class="w-full border-2 rounded-md outline-none focus:border-primary-active border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10" />
+            <app-form-field label="Percentage to Consider (%)" [required]="true"
+              class="md:basis-3/4 basis-full flex motion-preset-fade-lg motion-delay-200">
+              <app-input placeholder="10" formControlName="maximumBudgetInvestment" type="number" />
 
               <div class="flex flex-col gap-2">
                 <span class="text-error motion-preset-slide-down-md motion-duration-1000"
@@ -102,38 +101,25 @@
                   *ngIf="form.get('maximumBudgetInvestment')!.touched && form.get('maximumBudgetInvestment')!.hasError('max')">
                   Percentage must be 100 or less</span>
               </div>
-            </label>
+            </app-form-field>
             }
           </div>
-          <label class="flex flex-col" *ngIf="fetchedCategory">
-            <span class="text-white-800"><span class="text-required">*</span> Active</span>
-            <button [cdkMenuTriggerFor]="menu"
-              class="w-full border-2 rounded-md border-white-300 shadow-inner flex text-nowrap px-4 py-2 min-w-44 h-10">{{form.get('active')!.value
-              ? "Active" : "Deactive"}}</button>
 
-            <ng-template #menu>
-              <div
-                class="bg-white-0 shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-white-50 motion-preset-slide-down-md p-2"
-                cdkMenu>
-                <button
-                  [class]="((this.form.get('active')!.value)  == true ? 'bg-slate-200' : 'bg-slate-50') + ' rounded-md p-2'"
-                  cdkMenuItem (click)="activate()"
-                  class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold">
-                   Active 
-                </button>
-                <button
-                  class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold"
-                  cdkMenuItem (click)="deactivate()">
-                  Deactive 
-                </button>
-              </div>
-            </ng-template>
+          <app-form-field label="Active" [required]="true" class="flex flex-col" *ngIf="fetchedCategory">
+            <app-select [options]="activeOptions" [isStaticOptions]="true" formControlName="active">
+              <app-select-container>
+                @for (option of activeOptions; track option.value) {
+                  <app-select-option [option]="option">{{ option.label }}</app-select-option>
+                }
+              </app-select-container>
+            </app-select>
 
-          </label>
+          </app-form-field>
         </form>
       </section>
       @if (fetchedCategory) {
-        <app-button (click)="openDeleteDialog()" className="bg-error hover:bg-error-hover active:bg-error-active" [loading]="isDeletingCategory" [disabled]="isDeletingCategory"> Delete Category</app-button>
+      <app-button (click)="openDeleteDialog()" className="bg-error hover:bg-error-hover active:bg-error-active"
+        [loading]="isDeletingCategory" [disabled]="isDeletingCategory"> Delete Category</app-button>
       }
       }
     </section>
@@ -142,17 +128,3 @@
 
 
 </div>
-
-
-
-<ng-template #menu>
-  <div
-    class="bg-white-0 shadow-md flex flex-col min-w-44 gap-2 rounded-md translate-y-2 border-t border-t-white-50 motion-preset-slide-down-md p-2"
-    cdkMenu>
-
-    @for (boundary of financialBoundaries; track boundary) {
-    <button class="rounded-md p-2 border-2 border-white-50 hover:bg-white-100 transition-all font-semibold" cdkMenuItem
-      (click)="changeBoundaryTo(boundary)">{{boundary}} </button>
-    }
-  </div>
-</ng-template>
